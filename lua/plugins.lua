@@ -43,6 +43,9 @@ require('packer').startup(function(use)
     'catppuccin/nvim',
     as = 'catppuccin',
     config = function ()
+      require('catppuccin').setup({
+        no_italic = true
+      })
       vim.cmd.colorscheme 'catppuccin'
     end
   }
