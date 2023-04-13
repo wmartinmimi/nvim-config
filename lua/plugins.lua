@@ -175,6 +175,12 @@ require('packer').startup(function(use)
             require('snippy').expand_snippet(args.body)
           end
         },
+        matching = {
+          disallow_fuzzying_matching = false,
+          disallow_partial_fuzzying_matching = false,
+          disallow_partial_matching = false,
+          disallow_prefix_unmatching = false
+        },
         sorting = {
           priority_weight = 2,
           comparators = {
