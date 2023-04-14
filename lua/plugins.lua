@@ -253,7 +253,6 @@ require('packer').startup(function(use)
     requires = {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
-      --'ms-jpq/coq_nvim'
       'hrsh7th/nvim-cmp'
     },
     config = function()
@@ -267,12 +266,6 @@ require('packer').startup(function(use)
         }
       })
       local lsp = require('lspconfig')
-      --[[
-local coq = require('coq')
-local function ensure(setup)
-  return coq.lsp_ensure_capabilities(setup)
-  end
-  --]]
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local function setup(server)
         lsp[server].setup({
@@ -289,54 +282,8 @@ local function ensure(setup)
       setup('tsserver')
       setup('ltex')
       setup('rust_analyzer')
-
-      --[[
-  lsp.pyright.setup({})
-  lsp.pylsp.setup({})
-  lsp.jdtls.setup({})
-  lsp.html.setup({})
-  lsp.clangd.setup({})
-  lsp.cssls.setup({})
-  lsp.lua_ls.setup({})
-  lsp.tsserver.setup({})
-  lsp.ltex.setup({})
-  lsp.rust_analyzer.setup({})
-  --]]
-
-      --[[
-  lsp.pyright.setup(ensure({}))
-  lsp.pylsp.setup(ensure({}))
-  lsp.jdtls.setup(ensure({}))
-  lsp.html.setup(ensure({}))
-  lsp.clangd.setup(ensure({}))
-  lsp.cssls.setup(ensure({}))
-  lsp.lua_ls.setup(ensure({}))
-  lsp.tsserver.setup(ensure({}))
-  lsp.ltex.setup(ensure({}))
-  lsp.rust_analyzer.setup(ensure({}))
-  --]]
     end,
   }
-  --[[use {
-  'ms-jpq/coq_nvim',
-  branch = 'coq',
-  run = ':COQdeps',
-  config = function()
-  vim.g.coq_settings = {
-  auto_start = 'shut-up'
-  }
-  end
-  }
-  use {
-  'ms-jpq/coq.artifacts',
-  branch = 'artifacts'
-  }
-  use {
-  'ms-jpq/coq.thirdparty',
-  branch = '3p'
-  }
-  --]]
-
   if packer_bootstrap then
     require('packer').sync()
   end
