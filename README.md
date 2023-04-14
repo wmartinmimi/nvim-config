@@ -11,7 +11,7 @@ You are welcomed to fork and use my config.
 
 ## Screenshot
 
-![Example](example.png)
+![Example](example.jpg)
 
 ## Features
 
