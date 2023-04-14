@@ -9,6 +9,10 @@ Intended for termux but may work on others as well.
 
 You are welcomed to fork and use my config.
 
+## Screenshot
+
+![Example](example.png)
+
 ## Features
 
 - modernish look (with catppuccin)
