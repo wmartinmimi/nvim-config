@@ -23,6 +23,6 @@ You are welcomed to fork and use my config.
 ## Installation
 ```bash
 mv ~/.config/nvim ~/.config/nvim.old
-git clone https://github.com/wmartinmimi/nvim ~/.config/nvim
+git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
 nvim +PackerSync
 ```
