@@ -2,7 +2,7 @@
 
 ## Description
 
-This is my own personal bootstrapped nvim config.
+This is my own personal nvim config.
 I keep this as backup in case I wiped my config.
 
 Intended for termux but may work on others as well.
