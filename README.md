@@ -51,6 +51,10 @@ git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
 nvim +PackerSync
 ```
 
+## Requires
+
+- Nerdfont
+
 ## Command to exit nvim
 
 ```<ESC>:qa<ENTER>```
