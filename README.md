@@ -42,13 +42,11 @@ Lsp will be automatically setup.
 ## Installation
 
 ```bash
-# auto backup old config
 mv ~/.config/nvim ~/.config/nvim.old
-# clone the required config files
 git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
-# auto start nvim for auto setup
-nvim +PackerSync
 ```
+
+If Packer shows error on first install, reopen nvim and run ```:PackerSync``` again.
 
 ## Requires
 
