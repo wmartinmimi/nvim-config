@@ -20,18 +20,17 @@ Everything may change at anytime.
 
 - modernish look (with catppuccin)
 - autocompletion with lsp
+- easy lsp install and setup with mason.nvim
 - git interface for commits and conflict managing
 - autosave
 - telescope.nvim
 - quick word jumping with hop.nvim
 
-## Languages lsps auto installed and setup
+## Installing Lsps
+```<ESC>:Mason<ENTER>``` to enter Mason.
 
-- c/c++, anything that clang supports
-- html, css, javascript, typescript
-- java
-- lua
-- rust
+Select lsp and press ```i``` to install.
+Lsp will be automatically setup.
 
 ## Shortcuts
 
@@ -43,10 +42,6 @@ Everything may change at anytime.
 ## Installation
 
 ```bash
-# install required packages
-apt install neovim git 
-# install lsp packages
-apt install clang rust-analyzer lua-language-server nodejs-lts
 # auto backup old config
 mv ~/.config/nvim ~/.config/nvim.old
 # clone the required config files

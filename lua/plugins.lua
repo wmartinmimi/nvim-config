@@ -272,19 +272,17 @@ require('packer').startup(function(use)
           capabilities = capabilities
         })
       end
-      setup('pyright')
-      setup('pylsp')
-      setup('jdtls')
-      setup('html')
+      require('mason-lspconfig').setup_handlers({
+        setup 
+      })
+      -- lsp that is installed outside mason
       setup('clangd')
-      setup('cssls')
-      setup('lua_ls')
-      setup('tsserver')
-      setup('ltex')
       setup('rust_analyzer')
-    end,
+      setup('lua_ls')
+    end
   }
-  if packer_bootstrap then
-    require('packer').sync()
-  end
 end)
+if packer_bootstrap then
+  require('packer').sync()
+end
+
