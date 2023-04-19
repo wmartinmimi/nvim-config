@@ -1,9 +1,10 @@
+-- Packer.nvim bootstrap
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
     fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
+    vim.cmd.packadd('packer.nvim')
     return true
   end
   return false
@@ -23,6 +24,7 @@ require('packer').startup(function(use)
       'TextChanged'
     }
   }
+
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -46,7 +48,7 @@ require('packer').startup(function(use)
       require('catppuccin').setup({
         no_italic = true
       })
-      vim.cmd.colorscheme 'catppuccin'
+      vim.cmd.colorscheme('catppuccin')
     end
   }
   use {
@@ -104,7 +106,9 @@ require('packer').startup(function(use)
   use 'nvim-tree/nvim-web-devicons'
   use {
     "windwp/nvim-autopairs",
-    config = function() require("nvim-autopairs").setup {} end
+    config = function()
+      require("nvim-autopairs").setup({})
+    end
   }
   use {
     'yamatsum/nvim-cursorline',
@@ -136,13 +140,13 @@ require('packer').startup(function(use)
     end
   }
 
-  use 'neovim/nvim-lspconfig'
   use {
     'williamboman/mason.nvim',
-    run = ':MasonUpdate',
-    config = function()
+    run = ':MasonUpdate'
+    -- offloaded to mason-lspconfig setup
+    --[[config = function()
       require('mason').setup()
-    end
+    end]]
   }
   use {
     'hrsh7th/nvim-cmp',
@@ -151,16 +155,18 @@ require('packer').startup(function(use)
       'dcampos/cmp-snippy',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
       'FelipeLema/cmp-async-path',
       'hrsh7th/cmp-cmdline',
       'onsails/lspkind.nvim',
-      'kdheepak/cmp-latex-symbols'
+      'kdheepak/cmp-latex-symbols',
+      'hrsh7th/cmp-emoji',
+      'hrsh7th/cmp-calc'
     },
     config = function()
       local cmp = require('cmp')
       local map = cmp.mapping
       local compare = require('cmp.config.compare')
+
       cmp.setup({
         formatting = {
           format = require('lspkind').cmp_format({
@@ -195,51 +201,68 @@ require('packer').startup(function(use)
           }
         },
         mapping = {
-          ['<Down>'] = map(map.select_next_item(), {'i', 's'}),
-          ['<Up>'] = map(map.select_prev_item(), {'i', 's'}),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            -- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
+          ['<Down>'] = map(map.select_next_item(), {'i', 's', 'c'}),
+          ['<Up>'] = map(map.select_prev_item(), {'i', 's', 'c'}),
+          ["<Tab>"] = map(function(fallback)
+            -- enter selected completion
+            -- enter 1st completion if none selected
             if cmp.visible() then
               local entry = cmp.get_selected_entry()
               if not entry then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                cmp.select_next_item({
+                  behavior = cmp.SelectBehavior.Select
+                })
               else
                 cmp.confirm()
               end
             else
               fallback()
             end
-          end, {"i","s","c",}),
-          ["<CR>"] = cmp.mapping({
+          end, {'i','s','c'}),
+          ["<CR>"] = map({
             i = function(fallback)
               if cmp.visible() and cmp.get_active_entry() then
-                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                cmp.confirm({
+                  behavior = cmp.ConfirmBehavior.Replace,
+                  select = false
+                })
               else
                 fallback()
               end
             end,
-            s = cmp.mapping.confirm({ select = true }),
-            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+            s = map.confirm({
+              select = true
+            }),
+            c = map.confirm({
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true
+            }),
           })
         },
         sources = cmp.config.sources({
+          { name = 'calc' },
           { name = 'nvim_lsp' },
           { name = 'snippy' },
-          { name = "latex_symbols" },
-          { name = 'nvim_lsp_signature_help' }
+          { name = 'latex_symbols' },
+          {
+            name = 'emoji',
+            option = {
+              insert = true
+            }
+          }
         },
           {
             { name = 'buffer' }
           })
       })
       cmp.setup.cmdline({ '/', '?' }, {
-        mapping = cmp.mapping.preset.cmdline(),
+        mapping = map.preset.cmdline(),
         sources = {
           { name = 'buffer' }
         }
       })
       cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
+        mapping = map.preset.cmdline(),
         sources = cmp.config.sources({
           { name = 'async_path' }
         }, {
@@ -256,6 +279,7 @@ require('packer').startup(function(use)
       'hrsh7th/nvim-cmp'
     },
     config = function()
+      require('mason').setup()
       require('mason-lspconfig').setup({
         automatic_installation = {
           exclude = {
@@ -273,7 +297,7 @@ require('packer').startup(function(use)
         })
       end
       require('mason-lspconfig').setup_handlers({
-        setup 
+        setup
       })
       -- lsp that is installed outside mason
       setup('clangd')
