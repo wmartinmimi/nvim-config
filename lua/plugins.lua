@@ -94,14 +94,16 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
-      opt = true
     },
     config = function()
       require('lualine').setup()
     end,
     event = 'VeryLazy'
   },
+  {
   'nvim-tree/nvim-web-devicons',
+    lazy = true
+  },
   {
     "windwp/nvim-autopairs",
     config = function()
