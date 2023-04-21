@@ -46,7 +46,7 @@ mv ~/.config/nvim ~/.config/nvim.old
 git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
 ```
 
-If Packer shows error on first install, reopen nvim and run ```:PackerSync``` again.
+If Lazy shows error on first install, reopen nvim, run ```:Lazy```, and run update (U).
 
 ## Requires
 

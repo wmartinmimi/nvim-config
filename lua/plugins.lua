@@ -1,33 +1,28 @@
--- Packer.nvim bootstrap
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd.packadd('packer.nvim')
-    return true
-  end
-  return false
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer_bootstrap = ensure_packer()
-
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-  use {
+require('lazy').setup({
+  'folke/lazy.nvim',
+  {
     'Pocco81/auto-save.nvim',
     config = function()
       require('auto-save').setup()
     end,
-    event = {
-      'InsertLeave',
-      'TextChanged'
-    }
-  }
-
-  use {
+    event = 'VeryLazy'
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
+    build = ':TSUpdate',
     config = function ()
       require('nvim-treesitter.configs').setup({
         auto_install = true,
@@ -40,77 +35,81 @@ require('packer').startup(function(use)
         }
       })
     end,
-  }
-  use {
+    event = 'VeryLazy'
+  },
+  {
     'catppuccin/nvim',
-    as = 'catppuccin',
+    name = 'catppuccin',
     config = function ()
       require('catppuccin').setup({
+        term_colors = true,
         no_italic = true
       })
       vim.cmd.colorscheme('catppuccin')
-    end
-  }
-  use {
+    end,
+    build = ':CatppuccinCompile',
+  },
+  {
     'phaazon/hop.nvim',
     config = function()
       require('hop').setup()
     end,
     cmd = 'HopWord'
-  }
-  use {
+  },
+  {
     'romgrk/barbar.nvim',
-    requires = 'nvim-web-devicons'
-  }
-  use {
+    dependencies = 'nvim-web-devicons',
+    event = 'VeryLazy'
+  },
+  {
     'nvim-telescope/telescope.nvim',
-    requires = 'nvim-lua/plenary.nvim',
+    dependencies = 'nvim-lua/plenary.nvim',
     cmd = 'Telescope'
-  }
-  use {
-    'TimUntersberger/neogit',
-    requires = 'nvim-lua/plenary.nvim'
-  }
-  use {
+  },
+  {
     'akinsho/git-conflict.nvim',
     config = function()
       require('git-conflict').setup()
-    end
-  }
-  use {
+    end,
+    event = 'VeryLazy'
+  },
+  {
     'nvim-tree/nvim-tree.lua',
-    requires = 'nvim-web-devicons',
+    dependencies = 'nvim-web-devicons',
     config = function()
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
       require('nvim-tree').setup()
     end,
     cmd = 'NvimTreeToggle'
-  }
-  use {
+  },
+  {
     'lukas-reineke/indent-blankline.nvim',
     config = function()
       require('indent_blankline').setup()
     end,
-  }
-  use {
+    event = 'VeryLazy'
+  },
+  {
     'nvim-lualine/lualine.nvim',
-    requires = {
+    dependencies = {
       'nvim-tree/nvim-web-devicons',
       opt = true
     },
     config = function()
       require('lualine').setup()
     end,
-  }
-  use 'nvim-tree/nvim-web-devicons'
-  use {
+    event = 'VeryLazy'
+  },
+  'nvim-tree/nvim-web-devicons',
+  {
     "windwp/nvim-autopairs",
     config = function()
       require("nvim-autopairs").setup({})
-    end
-  }
-  use {
+    end,
+    event = 'InsertEnter'
+  },
+  {
     'yamatsum/nvim-cursorline',
     config = function()
       require('nvim-cursorline').setup({
@@ -125,9 +124,10 @@ require('packer').startup(function(use)
           hl = { underline = true },
         }
       })
-    end
-  }
-  use {
+    end,
+    event = 'VeryLazy'
+  },
+  {
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup({
@@ -137,30 +137,26 @@ require('packer').startup(function(use)
           RRGGBBAA = true
         };
       })
-    end
-  }
-
-  use {
-    'williamboman/mason.nvim',
-    run = ':MasonUpdate'
-    -- offloaded to mason-lspconfig setup
-    --[[config = function()
-      require('mason').setup()
-    end]]
-  }
-  use {
+    end,
+    event = 'VeryLazy'
+  },
+  {
     'hrsh7th/nvim-cmp',
-    requires = {
+    dependencies = {
       'dcampos/nvim-snippy',
       'dcampos/cmp-snippy',
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
+      'lukas-reineke/cmp-rg',
       'FelipeLema/cmp-async-path',
       'hrsh7th/cmp-cmdline',
       'onsails/lspkind.nvim',
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
       'hrsh7th/cmp-calc'
+    },
+    event = {
+      'InsertEnter',
+      'CmdlineEnter'
     },
     config = function()
       local cmp = require('cmp')
@@ -242,23 +238,23 @@ require('packer').startup(function(use)
         sources = cmp.config.sources({
           { name = 'calc' },
           { name = 'nvim_lsp' },
-          { name = 'snippy' },
-          { name = 'latex_symbols' },
-          {
-            name = 'emoji',
-            option = {
-              insert = true
-            }
-          }
+          { name = 'snippy' }
         },
           {
-            { name = 'buffer' }
+            { name = 'latex_symbols' },
+            {
+              name = 'emoji',
+              option = {
+                insert = true
+              }
+            },
+            { name = 'rg' }
           })
       })
       cmp.setup.cmdline({ '/', '?' }, {
         mapping = map.preset.cmdline(),
         sources = {
-          { name = 'buffer' }
+          { name = 'rg' }
         }
       })
       cmp.setup.cmdline(':', {
@@ -270,14 +266,14 @@ require('packer').startup(function(use)
           })
       })
     end
-  }
-  use {
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
-    requires = {
+    dependencies = {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
-      'hrsh7th/nvim-cmp'
     },
+    build = ':MasonUpdate',
     config = function()
       require('mason').setup()
       require('mason-lspconfig').setup({
@@ -305,8 +301,4 @@ require('packer').startup(function(use)
       setup('lua_ls')
     end
   }
-end)
-if packer_bootstrap then
-  require('packer').sync()
-end
-
+})
