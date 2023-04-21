@@ -54,6 +54,14 @@ If Lazy shows error on first install, reopen nvim, run ```:Lazy```, and run upda
 
 Download a nerdfont, paste in ~/.termux, and rename to ```font.ttf```.
 
+- Ripgrep
+
+Download ripgrep for fast regex.
+
+```bash
+apt install ripgrep
+```
+
 ## Command to exit nvim
 
 ```<ESC>:qa<ENTER>```
