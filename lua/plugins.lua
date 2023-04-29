@@ -101,7 +101,7 @@ require('lazy').setup({
     event = 'VeryLazy'
   },
   {
-  'nvim-tree/nvim-web-devicons',
+    'nvim-tree/nvim-web-devicons',
     lazy = true
   },
   {
@@ -154,13 +154,20 @@ require('lazy').setup({
       'onsails/lspkind.nvim',
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
-      'hrsh7th/cmp-calc'
+      'hrsh7th/cmp-calc',
+      'f3fora/cmp-spell'
     },
     event = {
       'InsertEnter',
       'CmdlineEnter'
     },
     config = function()
+
+      -- required by spell
+      vim.opt.spell = true
+      vim.opt.spelllang = { 'en_uk', 'en_us' }
+
+
       local cmp = require('cmp')
       local map = cmp.mapping
       local compare = require('cmp.config.compare')
@@ -186,16 +193,12 @@ require('lazy').setup({
           disallow_prefix_unmatching = false
         },
         sorting = {
-          priority_weight = 2,
+          priority_weight = 2.0,
           comparators = {
-            compare.offset,
-            compare.exact,
-            compare.score,
+            compare.locality,
             compare.recently_used,
-            compare.kind,
-            compare.sort_text,
-            compare.length,
-            compare.order,
+            compare.score,
+            compare.offset
           }
         },
         mapping = {
@@ -248,6 +251,15 @@ require('lazy').setup({
               name = 'emoji',
               option = {
                 insert = true
+              }
+            },
+            {
+              name = 'spell',
+              option = {
+                keep_all_entries = true,
+                enable_in_context = function()
+                  return require('cmp.config.context').in_treesitter_capture('spell')
+                end
               }
             },
             { name = 'rg' }
