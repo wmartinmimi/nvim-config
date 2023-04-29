@@ -295,7 +295,8 @@ require('lazy').setup({
           exclude = {
             'clangd',
             'rust_analyzer',
-            'lua_ls'
+            'lua_ls',
+            'texlab'
           }
         }
       })
@@ -313,6 +314,7 @@ require('lazy').setup({
       setup('clangd')
       setup('rust_analyzer')
       setup('lua_ls')
+      setup('texlab')
     end
   }
 })
