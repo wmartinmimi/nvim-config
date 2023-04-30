@@ -77,8 +77,6 @@ require('lazy').setup({
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
     config = function()
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
       require('nvim-tree').setup()
     end,
     cmd = 'NvimTreeToggle'
@@ -112,19 +110,10 @@ require('lazy').setup({
     event = 'InsertEnter'
   },
   {
-    'yamatsum/nvim-cursorline',
+    'delphinus/auto-cursorline.nvim',
     config = function()
-      require('nvim-cursorline').setup({
-        cursorline = {
-          enable = true,
-          timeout = 200,
-          number = true
-        },
-        cursorword = {
-          enable = true,
-          min_length = 1,
-          hl = { underline = true },
-        }
+      require('auto-cursorline').setup({
+        wait_ms = 200
       })
     end,
     event = 'VeryLazy'
