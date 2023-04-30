@@ -50,11 +50,30 @@ require('lazy').setup({
     build = ':CatppuccinCompile',
   },
   {
-    'phaazon/hop.nvim',
-    config = function()
-      require('hop').setup()
-    end,
-    cmd = 'HopWord'
+    'ggandor/leap.nvim',
+    event = 'VeryLazy',
+    config = function ()
+      local hl = vim.api.nvim_set_hl
+      hl(0, 'LeapBackdrop', {
+        link = 'Comment'
+      })
+      hl(0, 'LeapMatch', {
+        fg = '#89b4fa',
+        bold = true,
+        nocombine = true
+      })
+      hl(0, 'LeapLabelPrimary', {
+        fg = '#f38ba8',
+        bold = true,
+        nocombine = true
+      })
+      hl(0, 'LeapLabelSecondary', {
+        fg = '#f9e2af',
+        bold = true,
+        nocombine = true
+      })
+      require('leap').opts.highlight_unlabeled_phase_one_targets = true
+    end
   },
   {
     'romgrk/barbar.nvim',

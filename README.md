@@ -24,7 +24,7 @@ Everything may change at anytime.
 - git interface for commits and conflict managing
 - autosave
 - telescope.nvim
-- quick word jumping with hop.nvim
+- quick word jumping with leap.nvim
 
 ## Installing Lsps
 ```<ESC>:Mason<ENTER>``` to enter Mason.
