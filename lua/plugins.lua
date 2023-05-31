@@ -156,7 +156,7 @@ require('lazy').setup({
       'dcampos/nvim-snippy',
       'dcampos/cmp-snippy',
       'hrsh7th/cmp-nvim-lsp',
-      'lukas-reineke/cmp-rg',
+      'hrsh7th/cmp-buffer',
       'FelipeLema/cmp-async-path',
       'hrsh7th/cmp-cmdline',
       'onsails/lspkind.nvim',
@@ -270,13 +270,13 @@ require('lazy').setup({
                 end
               }
             },
-            { name = 'rg' }
+            { name = 'buffer' }
           })
       })
       cmp.setup.cmdline({ '/', '?' }, {
         mapping = map.preset.cmdline(),
         sources = {
-          { name = 'rg' }
+          { name = 'buffer' }
         }
       })
       cmp.setup.cmdline(':', {
