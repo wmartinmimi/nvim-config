@@ -102,9 +102,7 @@ require('lazy').setup({
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    config = function()
-      require('indent_blankline').setup()
-    end,
+    main = "ibl",
     event = 'VeryLazy'
   },
   {
@@ -298,16 +296,7 @@ require('lazy').setup({
     build = ':MasonUpdate',
     config = function()
       require('mason').setup()
-      require('mason-lspconfig').setup({
-        automatic_installation = {
-          exclude = {
-            'clangd',
-            'rust_analyzer',
-            'lua_ls',
-            'texlab'
-          }
-        }
-      })
+      require('mason-lspconfig').setup()
       local lsp = require('lspconfig')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local function setup(server)
@@ -318,11 +307,6 @@ require('lazy').setup({
       require('mason-lspconfig').setup_handlers({
         setup
       })
-      -- lsp that is installed outside mason
-      setup('clangd')
-      setup('rust_analyzer')
-      setup('lua_ls')
-      setup('texlab')
     end
   }
 })
