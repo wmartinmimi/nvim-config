@@ -296,7 +296,17 @@ require('lazy').setup({
     build = ':MasonUpdate',
     config = function()
       require('mason').setup()
-      require('mason-lspconfig').setup()
+
+      require('mason-lspconfig').setup({
+        automatic_installation = {
+          exclude = {
+            -- lsp you want to exclude
+            -- example
+            -- 'clangd'
+          }
+        }
+      })
+
       local lsp = require('lspconfig')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local function setup(server)
@@ -307,6 +317,11 @@ require('lazy').setup({
       require('mason-lspconfig').setup_handlers({
         setup
       })
+
+      -- lsp installed outside mason
+      -- example:
+      --
+      -- setup('clangd')
     end
   }
 })
