@@ -52,6 +52,8 @@ git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
 
 If Lazy shows error on first install, reopen nvim, run `:Lazy`, and run update (U).
 
+If codeium complains about `^M`, run `fromdos` in the files with errors to convert from `crlf` to `lf`.
+
 ## Requires
 
 - Nerdfont
