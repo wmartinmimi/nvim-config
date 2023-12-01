@@ -5,7 +5,7 @@
 This is my own personal nvim config.
 I keep this as backup in case I wiped my config.
 
-Intended for termux but may work on others as well.
+Intended for personal use (in termux) but may work for others as well.
 
 You are welcomed to fork and use my config.
 
@@ -25,19 +25,23 @@ Everything may change at anytime.
 - autosave
 - telescope.nvim
 - quick word jumping with leap.nvim
+- ai autocompletion via codeium
 
 ## Installing Lsps
-```<ESC>:Mason<ENTER>``` to enter Mason.
+`<ESC>:Mason<ENTER>` to enter Mason.
 
-Select lsp and press ```i``` to install.
+Select lsp and press `i` to install.
 Lsp will be automatically setup.
 
 ## Shortcuts
 
-- ```tt```: opens Telescope.nvim
-- ```ff```: opens nvim-tree
-- ```cf```: formats code via gg=G
-- ```Alt-/```: word jump
+- `tt`: opens Telescope.nvim
+- `ff`: opens nvim-tree
+- `cf`: formats code via `gg=G`
+- `Alt-/`: word jump
+- `Alt-Right`: accept codeium autocomplete
+- `Alt-Up`: switch to next codeium autocomplete
+- `Alt-Down`: switch to previous codeium autocomplete
 
 ## Installation
 
@@ -46,13 +50,13 @@ mv ~/.config/nvim ~/.config/nvim.old
 git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
 ```
 
-If Lazy shows error on first install, reopen nvim, run ```:Lazy```, and run update (U).
+If Lazy shows error on first install, reopen nvim, run `:Lazy`, and run update (U).
 
 ## Requires
 
 - Nerdfont
 
-Download a nerdfont, paste in ~/.termux, and rename to ```font.ttf```.
+Download a nerdfont, paste in ~/.termux, and rename to `font.ttf`.
 
 - Ripgrep
 
@@ -64,7 +68,7 @@ apt install ripgrep
 
 ## Command to exit nvim
 
-```<ESC>:qa<ENTER>```
+`<ESC>:qa<ENTER>`
 
 ## License
 
