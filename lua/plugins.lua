@@ -18,7 +18,7 @@ require('lazy').setup({
     config = function()
       require('auto-save').setup()
     end,
-    event = 'VeryLazy'
+    event = 'VeryLazy',
   },
   {
     'nvim-treesitter/nvim-treesitter',
@@ -40,12 +40,17 @@ require('lazy').setup({
   {
     'catppuccin/nvim',
     name = 'catppuccin',
+    priority = 1000,
+    lazy = true,
     config = function ()
       require('catppuccin').setup({
+        transparent_background = true,
         term_colors = true,
         no_italic = true
       })
-      vim.cmd.colorscheme('catppuccin')
+    end,
+    init = function()
+     vim.cmd.colorscheme('catppuccin')
     end,
     build = ':CatppuccinCompile',
   },
@@ -73,17 +78,35 @@ require('lazy').setup({
         nocombine = true
       })
       require('leap').opts.highlight_unlabeled_phase_one_targets = true
+    end,
+    init = function()
+      local function leap()
+        local focusable_windows_on_tabpage = vim.tbl_filter(
+          function (win) return vim.api.nvim_win_get_config(win).focusable end,
+          vim.api.nvim_tabpage_list_wins(0)
+        )
+        require('leap').leap { target_windows = focusable_windows_on_tabpage }
+      end
+
+      vim.keymap.set('', '<M-/>', leap)
+      vim.keymap.set('i', '<M-/>', leap)
     end
   },
   {
     'romgrk/barbar.nvim',
-    dependencies = 'nvim-web-devicons',
+    dependencies = {
+      'nvim-web-devicons',
+      'catppuccin'
+    },
     event = 'VeryLazy'
   },
   {
     'nvim-telescope/telescope.nvim',
     dependencies = 'nvim-lua/plenary.nvim',
-    cmd = 'Telescope'
+    cmd = 'Telescope',
+    init = function()
+      vim.api.nvim_set_keymap('n', 'tt', ':Telescope<CR>', {})
+    end
   },
   {
     'akinsho/git-conflict.nvim',
@@ -98,7 +121,10 @@ require('lazy').setup({
     config = function()
       require('nvim-tree').setup()
     end,
-    cmd = 'NvimTreeToggle'
+    cmd = 'NvimTreeToggle',
+    init = function()
+      vim.api.nvim_set_keymap('n', 'ff', ':NvimTreeToggle<CR>', {})
+    end
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -109,6 +135,7 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
+      'catppuccin'
     },
     config = function()
       require('lualine').setup()
@@ -161,7 +188,8 @@ require('lazy').setup({
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
       'hrsh7th/cmp-calc',
-      'f3fora/cmp-spell'
+      'f3fora/cmp-spell',
+      'williamboman/mason-lspconfig.nvim'
     },
     event = {
       'InsertEnter',
@@ -294,7 +322,7 @@ require('lazy').setup({
       'williamboman/mason.nvim',
     },
     build = ':MasonUpdate',
-    config = function()
+    init = function()
       require('mason').setup()
 
       require('mason-lspconfig').setup({
@@ -322,6 +350,15 @@ require('lazy').setup({
       -- example:
       --
       -- setup('clangd')
+    end
+  },
+  {
+    'Exafunction/codeium.vim',
+    event = 'InsertEnter',
+    config = function()
+      vim.keymap.set('i', '<M-Right>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+      vim.keymap.set('i', '<M-Down>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+      vim.keymap.set('i', '<M-Up>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
     end
   }
 })
