@@ -50,7 +50,7 @@ require('lazy').setup({
       })
     end,
     init = function()
-     vim.cmd.colorscheme('catppuccin')
+      vim.cmd.colorscheme('catppuccin')
     end,
     build = ':CatppuccinCompile',
   },
@@ -129,7 +129,10 @@ require('lazy').setup({
   {
     'lukas-reineke/indent-blankline.nvim',
     main = "ibl",
-    event = 'VeryLazy'
+    event = 'VeryLazy',
+    config = function()
+      require('ibl').setup()
+    end,
   },
   {
     'nvim-lualine/lualine.nvim',
