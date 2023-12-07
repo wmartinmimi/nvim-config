@@ -26,12 +26,22 @@ Everything may change at anytime.
 - telescope.nvim
 - quick word jumping with leap.nvim
 - ai autocompletion via codeium
+- markdown preview
 
 ## Installing Lsps
+
 `<ESC>:Mason<ENTER>` to enter Mason.
 
 Select lsp and press `i` to install.
 Lsp will be automatically setup.
+
+## Preview Markdown
+
+`<ESC>:MarkdownPreview<ENTER>` to start preview
+
+`<ESC>:MarkdownPreviewStop<ENTER>` to stop preview
+
+`<ESC>:MarkdownPreviewToggle<ENTER>` to toggle preview
 
 ## Shortcuts
 
@@ -63,6 +73,10 @@ Download a nerdfont, paste in ~/.termux, and rename to `font.ttf`.
 - Ripgrep
 
 Download ripgrep for fast regex.
+
+- Nodejs
+
+Download nodejs with `apt install nodejs`
 
 ```bash
 apt install ripgrep

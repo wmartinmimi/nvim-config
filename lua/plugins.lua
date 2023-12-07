@@ -14,6 +14,16 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   'folke/lazy.nvim',
   {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+    config = function() 
+      vim.g.mkdp_theme = 'light'
+      vim.g.mkdp_echo_preview_url = 1
+    end,
+},
+  {
     'Pocco81/auto-save.nvim',
     config = function()
       require('auto-save').setup()
