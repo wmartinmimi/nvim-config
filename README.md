@@ -52,6 +52,7 @@ Lsp will be automatically setup.
 - `Alt-Right`: accept codeium autocomplete
 - `Alt-Up`: switch to next codeium autocomplete
 - `Alt-Down`: switch to previous codeium autocomplete
+- `Alt-Left`: cancel normal autocomplete
 
 ## Installation
 

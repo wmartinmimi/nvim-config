@@ -176,6 +176,11 @@ require('lazy').setup({
     event = 'VeryLazy'
   },
   {
+    'numToStr/Comment.nvim',
+    opts = {},
+    event = 'VeryLazy'
+  },
+  {
     'norcalli/nvim-colorizer.lua',
     config = function()
       require('colorizer').setup({
@@ -251,6 +256,7 @@ require('lazy').setup({
         mapping = {
           ['<Down>'] = map(map.select_next_item(), {'i', 's', 'c'}),
           ['<Up>'] = map(map.select_prev_item(), {'i', 's', 'c'}),
+          ['<M-Left>'] = map(map.abort(), {'i', 's', 'c'}),
           ["<Tab>"] = map(function(fallback)
             -- enter selected completion
             -- enter 1st completion if none selected
