@@ -51,22 +51,20 @@ require('lazy').setup({
     'catppuccin/nvim',
     name = 'catppuccin',
     priority = 1000,
-    lazy = true,
+    lazy = false,
     config = function ()
       require('catppuccin').setup({
         transparent_background = true,
         term_colors = true,
         no_italic = true
       })
-    end,
-    init = function()
       vim.cmd.colorscheme('catppuccin')
     end,
     build = ':CatppuccinCompile',
   },
   {
     'ggandor/leap.nvim',
-    event = 'VeryLazy',
+    keys = '<M-/>',
     config = function ()
       local hl = vim.api.nvim_set_hl
       hl(0, 'LeapBackdrop', {
@@ -88,8 +86,7 @@ require('lazy').setup({
         nocombine = true
       })
       require('leap').opts.highlight_unlabeled_phase_one_targets = true
-    end,
-    init = function()
+
       local function leap()
         local focusable_windows_on_tabpage = vim.tbl_filter(
           function (win) return vim.api.nvim_win_get_config(win).focusable end,
@@ -349,7 +346,9 @@ require('lazy').setup({
           exclude = {
             -- lsp you want to exclude
             -- example
-            -- 'clangd'
+            'clangd',
+            'rust_analyzer',
+            'lua_ls'
           }
         }
       })
@@ -368,12 +367,20 @@ require('lazy').setup({
       -- lsp installed outside mason
       -- example:
       --
-      -- setup('clangd')
+      setup('clangd')
+      setup('rust_analyzer')
+      setup('lua_ls')
     end
   },
   {
     'Exafunction/codeium.vim',
     event = 'InsertEnter',
+    cmd = {
+      'Codeium',
+      'CodeiumEnable',
+      'CodeiumAuto'
+    },
+    enabled = false,
     config = function()
       vim.keymap.set('i', '<M-Right>', function() return vim.fn['codeium#Accept']() end, { expr = true })
       vim.keymap.set('i', '<M-Down>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
