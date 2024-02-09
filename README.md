@@ -5,7 +5,7 @@
 This is my own personal nvim config.
 I keep this as backup in case I wiped my config.
 
-Intended for personal use (in termux) but may work for others as well.
+Intended for personal use (in termux and linux distros) but may work for others as well.
 
 You are welcomed to fork and use my config.
 
@@ -25,7 +25,7 @@ Everything may change at anytime.
 - autosave
 - telescope.nvim
 - quick word jumping with leap.nvim
-- ai autocompletion via codeium
+- ai autocompletion via codeium (non-termux)
 - markdown preview
 
 ## Installing Lsps
@@ -34,6 +34,31 @@ Everything may change at anytime.
 
 Select lsp and press `i` to install.
 Lsp will be automatically setup.
+
+### Notice Termux users
+
+`clangd`, `rust_analyzer`, `lua_ls` from mason does not work with termux.
+
+Instead, install from package manager, this config is already set to work with installed versions.
+
+For clangd:
+
+```sh
+apt install clangd
+```
+
+For rust analyzer:
+
+```sh
+apt install rust-analyzer
+```
+For lua language server (`lua_ls`):
+
+```sh
+apt install lua-language-server
+```
+
+After installation, they should work automatically.
 
 ## Preview Markdown
 
@@ -53,6 +78,10 @@ Lsp will be automatically setup.
 - `Alt-Up`: switch to next codeium autocomplete
 - `Alt-Down`: switch to previous codeium autocomplete
 - `Alt-Left`: cancel normal autocomplete
+
+### Notice Termux users
+
+codeium binary does not work with termux the last time I checked, hence plugin is disabled by default.
 
 ## Installation
 

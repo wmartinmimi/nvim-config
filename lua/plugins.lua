@@ -25,7 +25,7 @@ require('lazy').setup({
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
-    config = function() 
+    config = function()
       vim.g.mkdp_theme = 'light'
       vim.g.mkdp_echo_preview_url = 1
     end,
@@ -74,6 +74,7 @@ require('lazy').setup({
     keys = '<M-/>',
     config = function ()
       local hl = vim.api.nvim_set_hl
+
       hl(0, 'LeapBackdrop', {
         link = 'Comment'
       })
@@ -270,6 +271,7 @@ require('lazy').setup({
                 cmp.select_next_item({
                   behavior = cmp.SelectBehavior.Select
                 })
+
               else
                 cmp.confirm()
               end
