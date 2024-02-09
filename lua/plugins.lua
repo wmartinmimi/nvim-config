@@ -1,3 +1,4 @@
+-- bootstrapping
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -11,6 +12,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- check if termux, need special workarounds
+local isTermux = string.find(
+  os.getenv("PREFIX") or "nil",
+  "termux"
+)
+
 require('lazy').setup({
   'folke/lazy.nvim',
   {
@@ -22,7 +29,7 @@ require('lazy').setup({
       vim.g.mkdp_theme = 'light'
       vim.g.mkdp_echo_preview_url = 1
     end,
-},
+  },
   {
     'Pocco81/auto-save.nvim',
     config = function()
@@ -341,15 +348,23 @@ require('lazy').setup({
     init = function()
       require('mason').setup()
 
+      local exclude = {
+        -- lsp you want to exclude
+        -- example
+        -- 'clangd',
+      }
+
+      if isTermux then
+        exclude = {
+          'clangd',
+          'rust_analyzer',
+          'lua_ls'
+        }
+      end
+
       require('mason-lspconfig').setup({
         automatic_installation = {
-          exclude = {
-            -- lsp you want to exclude
-            -- example
-            'clangd',
-            'rust_analyzer',
-            'lua_ls'
-          }
+          exclude = exclude
         }
       })
 
@@ -364,12 +379,14 @@ require('lazy').setup({
         setup
       })
 
-      -- lsp installed outside mason
-      -- example:
-      --
-      setup('clangd')
-      setup('rust_analyzer')
-      setup('lua_ls')
+      if isTermux then
+        -- lsp installed outside mason
+        -- example:
+        --
+        setup('clangd')
+        setup('rust_analyzer')
+        setup('lua_ls')
+      end
     end
   },
   {
@@ -380,7 +397,7 @@ require('lazy').setup({
       'CodeiumEnable',
       'CodeiumAuto'
     },
-    enabled = false,
+    enabled = not isTermux,
     config = function()
       vim.keymap.set('i', '<M-Right>', function() return vim.fn['codeium#Accept']() end, { expr = true })
       vim.keymap.set('i', '<M-Down>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
