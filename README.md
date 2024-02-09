@@ -16,6 +16,8 @@ Everything may change at anytime.
 
 ![Example](example.jpg)
 
+![Example 2](example2.png)
+
 ## Features
 
 - modernish look (with catppuccin)
