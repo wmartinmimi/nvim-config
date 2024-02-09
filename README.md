@@ -104,12 +104,16 @@ Download a nerdfont, paste in ~/.termux, and rename to `font.ttf`.
 
 Download ripgrep for fast regex.
 
+```sh
+apt install ripgrep
+```
+
 - Nodejs
 
-Download nodejs with `apt install nodejs`
+Download nodejs for Mason.
 
-```bash
-apt install ripgrep
+```sh
+apt install nodejs
 ```
 
 ## Command to exit nvim
