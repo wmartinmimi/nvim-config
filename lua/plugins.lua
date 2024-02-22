@@ -18,6 +18,15 @@ local isTermux = string.find(
   "termux"
 )
 
+local usrDir = os.getenv("HOME") or os.getenv("USERPROFILE")
+
+local haveWakaTime = false
+wakaConfig = io.open(usrDir .. "/.wakatime.cfg")
+if wakaConfig ~= nil then
+  haveWakaTime = true
+  wakaConfig:close()
+end
+
 require('lazy').setup({
   'folke/lazy.nvim',
   {
@@ -405,5 +414,10 @@ require('lazy').setup({
       vim.keymap.set('i', '<M-Down>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
       vim.keymap.set('i', '<M-Up>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
     end
+  },
+  {
+    'wakatime/vim-wakatime',
+    enabled = haveWakaTime,
+    lazy = false
   }
 })
