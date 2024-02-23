@@ -74,7 +74,7 @@ After installation, they should work automatically.
 
 - `tt`: opens Telescope.nvim
 - `ff`: opens nvim-tree
-- `cf`: formats code via `gg=G`
+- `cf`: formats code
 - `Alt-/`: word jump
 - `Alt-Right`: accept codeium autocomplete
 - `Alt-Up`: switch to next codeium autocomplete
