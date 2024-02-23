@@ -117,6 +117,11 @@ require('lazy').setup({
     end
   },
   {
+    'mg979/vim-visual-multi',
+    branch = 'master',
+    event = 'VeryLazy'
+  },
+  {
     'romgrk/barbar.nvim',
     dependencies = {
       'nvim-web-devicons',
