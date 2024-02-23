@@ -268,8 +268,8 @@ require('lazy').setup({
           }
         },
         mapping = {
-          ['<M-[>'] = map(map.select_prev_item(), {'i', 's', 'c'}),
-          ['<M-]>'] = map(map.select_next_item(), {'i', 's', 'c'}),
+          ['<UP>'] = map(map.select_prev_item(), {'i', 's', 'c'}),
+          ['<Down>'] = map(map.select_next_item(), {'i', 's', 'c'}),
           ['<M-Enter>'] = map(map.abort(), {'i', 's', 'c'}),
           ["<Enter>"] = map(function(fallback)
             -- enter selected completion
