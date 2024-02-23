@@ -314,6 +314,8 @@ require('lazy').setup({
               fallback()
             end
           end, { 'i', 's', 'c' }),
+          ['<C-j>'] = map(map.scroll_docs(1), { 'i', 's', 'c' }),
+          ['<C-k>'] = map(map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
