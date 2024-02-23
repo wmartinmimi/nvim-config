@@ -102,6 +102,10 @@ require('lazy').setup({
         build = ':CatppuccinCompile',
     },
     {
+        'nmac427/guess-indent.nvim',
+        opts = {}
+    },
+    {
         'ggandor/leap.nvim',
         keys = '<M-/>',
         config = function()
@@ -312,9 +316,9 @@ require('lazy').setup({
                     end, { 'i', 's', 'c' }),
                 },
                 sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'snippy' }
-                },
+                        { name = 'nvim_lsp' },
+                        { name = 'snippy' }
+                    },
                     {
                         { name = 'latex_symbols' },
                         {
