@@ -92,8 +92,9 @@ require('lazy').setup({
     priority = 1000,
     lazy = false,
     config = function()
+      -- run :CatppuccinCompile after config change
       require('catppuccin').setup({
-        transparent_background = true,
+        transparent_background = not isTermux,
         term_colors = true,
         no_italic = true
       })
