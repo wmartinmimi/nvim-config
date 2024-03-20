@@ -71,6 +71,9 @@ require('lazy').setup({
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    requires = {
+      'p00f/nvim-ts-rainbow',
+    },
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
@@ -81,6 +84,9 @@ require('lazy').setup({
         },
         indent = {
           enable = true
+        },
+        rainbow = {
+          enable = true,
         }
       })
     end,
@@ -190,6 +196,9 @@ require('lazy').setup({
     config = function()
       require('ibl').setup()
     end,
+  },
+  {
+    'p00f/nvim-ts-rainbow',
   },
   {
     'nvim-lualine/lualine.nvim',
