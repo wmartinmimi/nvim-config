@@ -5,6 +5,7 @@ local isTermux = string.find(
 )
 
 -- alias
+local vim = vim
 local opt = vim.opt
 local g = vim.g
 local map = vim.keymap.set
@@ -153,7 +154,7 @@ require('lazy').setup({
   {
     'mg979/vim-visual-multi',
     branch = 'master',
-    event = 'VeryLazy'
+    event = 'VeryLazy',
   },
   {
     'romgrk/barbar.nvim',
@@ -275,7 +276,7 @@ require('lazy').setup({
 
 
       local cmp = require('cmp')
-      local map = cmp.mapping
+      local cmp_map = cmp.mapping
       local compare = require('cmp.config.compare')
 
       cmp.setup({
@@ -308,10 +309,10 @@ require('lazy').setup({
           }
         },
         mapping = {
-          ['<UP>'] = map(map.select_prev_item(), { 'i', 's', 'c' }),
-          ['<Down>'] = map(map.select_next_item(), { 'i', 's', 'c' }),
-          ['<M-Enter>'] = map(map.abort(), { 'i', 's', 'c' }),
-          ["<Enter>"] = map(function(fallback)
+          ['<UP>'] = cmp_map(cmp_map.select_prev_item(), { 'i', 's', 'c' }),
+          ['<Down>'] = cmp_map(cmp_map.select_next_item(), { 'i', 's', 'c' }),
+          ['<M-Enter>'] = cmp_map(cmp_map.abort(), { 'i', 's', 'c' }),
+          ["<Enter>"] = cmp_map(function(fallback)
             -- enter selected completion
             if cmp.visible() then
               local entry = cmp.get_selected_entry()
@@ -324,8 +325,8 @@ require('lazy').setup({
               fallback()
             end
           end, { 'i', 's', 'c' }),
-          ['<C-j>'] = map(map.scroll_docs(1), { 'i', 's', 'c' }),
-          ['<C-k>'] = map(map.scroll_docs(-1), { 'i', 's', 'c' }),
+          ['<C-j>'] = cmp_map(cmp_map.scroll_docs(1), { 'i', 's', 'c' }),
+          ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
@@ -352,7 +353,7 @@ require('lazy').setup({
           })
       })
       cmp.setup.cmdline({ '/', '?' }, {
-        mapping = map.preset.cmdline(),
+        mapping = cmp_map.preset.cmdline(),
         sources = {
           { name = 'buffer' }
         }
@@ -417,9 +418,9 @@ require('lazy').setup({
 
       -- note: diagnostics are not exclusive to lsp servers
       -- so these can be global keybindings
-      map('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
-      map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
-      map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
+      map('n', 'gl', vim.diagnostic.open_float)
+      map('n', '[d', vim.diagnostic.goto_prev)
+      map('n', ']d', vim.diagnostic.goto_next)
 
       vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP actions',
@@ -429,17 +430,19 @@ require('lazy').setup({
           -- these will be buffer-local keybindings
           -- because they only work if you have an active language server
 
-          map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-          map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-          map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-          map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-          map('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-          map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-          map('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-          map('n', 'cr', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-          map({ 'n', 'x' }, 'cf', '<cmd>:echo "formated"<cr><cmd>lua vim.lsp.buf.format({async = true})<cr>',
-            opts)
-          map('n', 'ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+          map('n', 'K', vim.lsp.buf.hover, opts)
+          map('n', 'gd', vim.lsp.buf.definition, opts)
+          map('n', 'gD', vim.lsp.buf.declaration, opts)
+          map('n', 'gi', vim.lsp.buf.implementation, opts)
+          map('n', 'go', vim.lsp.buf.type_definition, opts)
+          map('n', 'gr', vim.lsp.buf.references, opts)
+          map('n', 'gs', vim.lsp.buf.signature_help, opts)
+          map('n', 'cr', vim.lsp.buf.rename, opts)
+          map({ 'n', 'x' }, 'cf', function()
+            print('formatted')
+            vim.lsp.buf.format({ async = true })
+          end, opts)
+          map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
     end
