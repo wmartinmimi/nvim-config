@@ -94,7 +94,16 @@ git clone https://github.com/wmartinmimi/nvim-config ~/.config/nvim
 
 If Lazy shows error on first install, reopen nvim, run `:Lazy`, and run update (U).
 
-If codeium complains about `^M`, run `fromdos` in the files with errors to convert from `crlf` to `lf`.
+### Notice WSL2 users
+
+WSL2 may bug out on some git repo, where scripts complain about `^M`.
+
+if so, run the following on the affected plugins in `~/.local/share/nvim/lazy`
+
+```sh
+git config core.autocrlf false
+git reset --hard HEAD
+```
 
 ## Requires
 

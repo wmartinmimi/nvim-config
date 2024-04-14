@@ -72,7 +72,9 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     requires = {
-      'p00f/nvim-ts-rainbow',
+      -- 'p00f/nvim-ts-rainbow',
+      -- 'HiPhish/nvim-ts-rainbow2',
+      'HiPhish/rainbow-delimiters.nvim',
     },
     build = ':TSUpdate',
     config = function()
@@ -90,7 +92,7 @@ require('lazy').setup({
         }
       })
     end,
-    event = 'VeryLazy'
+    event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
   },
   {
     'catppuccin/nvim',
@@ -197,8 +199,11 @@ require('lazy').setup({
       require('ibl').setup()
     end,
   },
+  --[[{
+    'HiPhish/nvim-ts-rainbow2',
+  },]]
   {
-    'p00f/nvim-ts-rainbow',
+    'HiPhish/rainbow-delimiters.nvim',
   },
   {
     'nvim-lualine/lualine.nvim',
