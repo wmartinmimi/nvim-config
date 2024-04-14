@@ -166,10 +166,27 @@ require('lazy').setup({
   },
   {
     'nvim-telescope/telescope.nvim',
-    dependencies = 'nvim-lua/plenary.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'folke/trouble.nvim'
+    },
     cmd = 'Telescope',
     init = function()
       map('n', 'tt', ':Telescope<CR>')
+    end,
+    config = function()
+      local trouble = require("trouble.providers.telescope")
+
+      local telescope = require("telescope")
+
+      telescope.setup {
+        defaults = {
+          mappings = {
+            i = { ["<c-t>"] = trouble.open_with_trouble },
+            n = { ["<c-t>"] = trouble.open_with_trouble },
+          },
+        },
+      }
     end
   },
   {
@@ -445,6 +462,18 @@ require('lazy').setup({
           map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
+    end
+  },
+  {
+    'folke/trouble.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    },
+    event = 'VeryLazy',
+    opts = {},
+    config = function ()
+      local trouble = require('trouble')
+      map('n', 'cd', trouble.toggle)
     end
   },
   {
