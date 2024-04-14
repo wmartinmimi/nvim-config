@@ -72,8 +72,6 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     requires = {
-      -- 'p00f/nvim-ts-rainbow',
-      -- 'HiPhish/nvim-ts-rainbow2',
       'HiPhish/rainbow-delimiters.nvim',
     },
     build = ':TSUpdate',
@@ -199,9 +197,6 @@ require('lazy').setup({
       require('ibl').setup()
     end,
   },
-  --[[{
-    'HiPhish/nvim-ts-rainbow2',
-  },]]
   {
     'HiPhish/rainbow-delimiters.nvim',
   },
