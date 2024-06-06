@@ -16,6 +16,7 @@ opt.relativenumber = true
 opt.termguicolors = true
 opt.expandtab = true
 opt.lazyredraw = true
+opt.linebreak = true
 
 if isTermux then
   opt.tabstop = 2
