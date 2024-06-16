@@ -18,6 +18,7 @@ opt.expandtab = true
 opt.lazyredraw = true
 opt.linebreak = true
 
+
 if isTermux then
   opt.tabstop = 2
   opt.shiftwidth = 2
@@ -188,6 +189,29 @@ require('lazy').setup({
           },
         },
       }
+    end
+  },
+  {
+    'kevinhwang91/nvim-fundo',
+    run = function ()
+      require('fundo').install()
+    end,
+    init = function ()
+      opt.undofile = true
+    end
+  },
+  {
+    'mbbill/undotree',
+    keys = {
+      {
+        'tu',
+        '<cmd>UndotreeToggle<CR>',
+        desc = 'toggle undo tree'
+      }
+    },
+    config = function ()
+      g.undotree_ShortIndicators = true
+      g.undotree_SetFocusWhenToggle = true
     end
   },
   {
