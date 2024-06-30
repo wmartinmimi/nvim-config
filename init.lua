@@ -222,6 +222,10 @@ require('lazy').setup({
     event = 'VeryLazy'
   },
   {
+    'sindrets/diffview.nvim',
+    cmd = 'DiffviewOpen',
+  },
+  {
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
     config = function()
