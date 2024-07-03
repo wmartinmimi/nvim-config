@@ -105,7 +105,12 @@ require('lazy').setup({
       require('catppuccin').setup({
         transparent_background = not isTermux,
         term_colors = true,
-        no_italic = true
+        no_italic = true,
+        custom_highlights = function(colors)
+          return {
+            LineNr = { fg = colors.overlay0 },
+          }
+        end
       })
       vim.cmd.colorscheme('catppuccin')
     end,
@@ -375,9 +380,9 @@ require('lazy').setup({
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = cmp.config.sources({
-            { name = 'nvim_lsp' },
-            { name = 'snippy' }
-          },
+          { name = 'nvim_lsp' },
+          { name = 'snippy' }
+        },
           {
             { name = 'latex_symbols' },
             {
@@ -467,6 +472,20 @@ require('lazy').setup({
       map('n', 'gl', vim.diagnostic.open_float)
       map('n', '[d', vim.diagnostic.goto_prev)
       map('n', ']d', vim.diagnostic.goto_next)
+
+      local visible = true
+      map('n', 'll', function()
+        visible = not visible
+        if visible then
+          print('errors enabled: true')
+        else
+          print('errors enabled: false')
+        end
+        vim.diagnostic.config({
+          virtual_text = visible,
+          underline = visible,
+        })
+      end)
 
       vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP actions',
