@@ -229,7 +229,7 @@ local config = {
     },
     cmd = 'NvimTreeToggle',
     keys = {
-      { 'ff', '<CMD>NvimTreeToggle<CR>', desc = 'toggle nvim tree', expr = true },
+      { 'ff', '<CMD>NvimTreeToggle<CR>', desc = 'opens nvim-tree' }
     },
     init = function()
       vim.g.loaded_netrw = 1
