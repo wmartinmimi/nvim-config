@@ -111,7 +111,9 @@ local config = {
   },
   {
     'ggandor/leap.nvim',
-    keys = { '<M-/>', desc = 'run leap.nvim' },
+    keys = {
+      { '<M-/>', desc = 'run leap.nvim' },
+    },
     config = function()
       local hl = vim.api.nvim_set_hl
 
@@ -222,13 +224,13 @@ local config = {
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
-    config = function()
-      require('nvim-tree').setup({
-        hijack_unnamed_buffer_when_opening = true,
-      })
-    end,
+    opts = {
+      hijack_unnamed_buffer_when_opening = true,
+    },
     cmd = 'NvimTreeToggle',
-    keys = { 'ff', '<CMD>NvimTreeToggle<CR>', desc = 'toggle nvim tree' },
+    keys = {
+      { 'ff', '<CMD>NvimTreeToggle<CR>', desc = 'toggle nvim tree', expr = true },
+    },
     init = function()
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
@@ -526,11 +528,11 @@ local config = {
     },
     enabled = not isTermux,
     keys = {
-      { '<M-Right>', function() return vim.fn['codeium#Accept']() end,  mode = 'i', expr = true },
-      { '<M-Down>',  function() return vim.fn['codeium#CycleCompletions'](1) end, mode = 'i', expr = true },
+      { '<M-Right>', function() return vim.fn['codeium#Accept']() end,             mode = 'i', expr = true },
+      { '<M-Down>',  function() return vim.fn['codeium#CycleCompletions'](1) end,  mode = 'i', expr = true },
       { '<M-Up>',    function() return vim.fn['codeium#CycleCompletions'](-1) end, mode = 'i', expr = true },
     },
-    config = function ()
+    config = function()
       vim.g.codeium_disable_bindings = 1
     end,
   },
