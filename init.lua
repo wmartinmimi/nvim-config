@@ -57,9 +57,7 @@ local config = {
   'folke/lazy.nvim',
   {
     'Pocco81/auto-save.nvim',
-    config = function()
-      require('auto-save').setup()
-    end,
+    opts = {},
     event = 'VeryLazy',
   },
   {
@@ -68,24 +66,22 @@ local config = {
       'HiPhish/rainbow-delimiters.nvim',
     },
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        auto_install = true,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false
-        },
-        autopairs = {
-          enable = true
-        },
-        indent = {
-          enable = true
-        },
-        rainbow = {
-          enable = true,
-        }
-      })
-    end,
+    opts = {
+      auto_install = true,
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false
+      },
+      autopairs = {
+        enable = true
+      },
+      indent = {
+        enable = true
+      },
+      rainbow = {
+        enable = true,
+      }
+    },
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
   },
   {
@@ -115,7 +111,7 @@ local config = {
   },
   {
     'ggandor/leap.nvim',
-    keys = '<M-/>',
+    keys = { '<M-/>', desc = 'run leap.nvim' },
     config = function()
       local hl = vim.api.nvim_set_hl
 
@@ -168,22 +164,22 @@ local config = {
     'nvim-telescope/telescope.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'folke/trouble.nvim'
+      'folke/trouble.nvim',
+    },
+    keys = {
+      { 'tt', '<CMD>Telescope<CR>', desc = 'opens telescope' }
     },
     cmd = 'Telescope',
-    init = function()
-      map('n', 'tt', ':Telescope<CR>')
-    end,
     config = function()
-      local trouble = require("trouble.providers.telescope")
+      local trouble = require("trouble.sources.telescope")
 
       local telescope = require("telescope")
 
       telescope.setup {
         defaults = {
           mappings = {
-            i = { ["<c-t>"] = trouble.open_with_trouble },
-            n = { ["<c-t>"] = trouble.open_with_trouble },
+            i = { ["<c-t>"] = trouble.open },
+            n = { ["<c-t>"] = trouble.open },
           },
         },
       }
@@ -232,10 +228,10 @@ local config = {
       })
     end,
     cmd = 'NvimTreeToggle',
+    keys = { 'ff', '<CMD>NvimTreeToggle<CR>', desc = 'toggle nvim tree' },
     init = function()
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
-      map('n', 'ff', ':NvimTreeToggle<CR>')
     end
   },
   {
@@ -256,10 +252,8 @@ local config = {
       'nvim-tree/nvim-web-devicons',
       'catppuccin'
     },
-    config = function()
-      require('lualine').setup()
-    end,
-    event = 'VeryLazy'
+    event = 'VeryLazy',
+    opts = {},
   },
   {
     'nvim-tree/nvim-web-devicons',
@@ -274,12 +268,10 @@ local config = {
   },
   {
     'delphinus/auto-cursorline.nvim',
-    config = function()
-      require('auto-cursorline').setup({
-        wait_ms = 200
-      })
-    end,
-    event = 'VeryLazy'
+    event = 'VeryLazy',
+    opts = {
+      wait_ms = 200,
+    },
   },
   {
     'numToStr/Comment.nvim',
@@ -485,6 +477,10 @@ local config = {
         })
       end)
 
+      map({ 'n', 'x' }, 'cf', function()
+        print('no lsp, please format with gg=G')
+      end, {})
+
       vim.api.nvim_create_autocmd('LspAttach', {
         desc = 'LSP actions',
         callback = function(event)
@@ -515,12 +511,10 @@ local config = {
     dependencies = {
       'nvim-tree/nvim-web-devicons'
     },
-    event = 'VeryLazy',
     opts = {},
-    config = function()
-      local trouble = require('trouble')
-      map('n', 'cd', trouble.toggle)
-    end
+    keys = {
+      { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
+    },
   },
   {
     'Exafunction/codeium.vim',
@@ -531,11 +525,14 @@ local config = {
       'CodeiumAuto'
     },
     enabled = not isTermux,
-    config = function()
-      map('i', '<M-Right>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-      map('i', '<M-Down>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-      map('i', '<M-Up>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-    end
+    keys = {
+      { '<M-Right>', function() return vim.fn['codeium#Accept']() end,  mode = 'i', expr = true },
+      { '<M-Down>',  function() return vim.fn['codeium#CycleCompletions'](1) end, mode = 'i', expr = true },
+      { '<M-Up>',    function() return vim.fn['codeium#CycleCompletions'](-1) end, mode = 'i', expr = true },
+    },
+    config = function ()
+      vim.g.codeium_disable_bindings = 1
+    end,
   },
   {
     'wakatime/vim-wakatime',
