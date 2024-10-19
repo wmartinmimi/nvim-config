@@ -188,10 +188,10 @@ require('lazy').setup({
   },
   {
     'kevinhwang91/nvim-fundo',
-    run = function ()
+    run = function()
       require('fundo').install()
     end,
-    init = function ()
+    init = function()
       opt.undofile = true
     end
   },
@@ -204,7 +204,7 @@ require('lazy').setup({
         desc = 'toggle undo tree'
       }
     },
-    config = function ()
+    config = function()
       g.undotree_ShortIndicators = true
       g.undotree_SetFocusWhenToggle = true
     end
@@ -224,10 +224,14 @@ require('lazy').setup({
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
     config = function()
-      require('nvim-tree').setup()
+      require('nvim-tree').setup({
+        hijack_unnamed_buffer_when_opening = true,
+      })
     end,
     cmd = 'NvimTreeToggle',
     init = function()
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
       map('n', 'ff', ':NvimTreeToggle<CR>')
     end
   },
@@ -279,17 +283,11 @@ require('lazy').setup({
     event = 'VeryLazy'
   },
   {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup({
-        '*',
-        css = {
-          css = true,
-          RRGGBBAA = true
-        },
-      })
-    end,
-    event = 'VeryLazy'
+    'brenoprata10/nvim-highlight-colors',
+    opts = {
+      render = 'virtual',
+    },
+    event = 'VeryLazy',
   },
   {
     'hrsh7th/nvim-cmp',
@@ -304,7 +302,8 @@ require('lazy').setup({
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
       'f3fora/cmp-spell',
-      'williamboman/mason-lspconfig.nvim'
+      'williamboman/mason-lspconfig.nvim',
+      'brenoprata10/nvim-highlight-colors',
     },
     event = {
       'InsertEnter',
@@ -322,13 +321,17 @@ require('lazy').setup({
 
       cmp.setup({
         formatting = {
-          format = require('lspkind').cmp_format({
-            mode = 'symbol',
-            maxwidth = 50,
-            ellipsis_char = '...'
-          })
+          format = function(entry, item)
+            local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
+            item = require("lspkind").cmp_format({ ellipsis_char = '..' })(entry, item)
+            -- nvim-highlight-colors integration
+            if color_item.abbr_hl_group then
+              item.kind_hl_group = color_item.abbr_hl_group
+              item.kind = color_item.abbr
+            end
+            return item
+          end,
         },
-
         snippet = {
           expand = function(args)
             require('snippy').expand_snippet(args.body)
@@ -370,9 +373,9 @@ require('lazy').setup({
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'snippy' }
-        },
+            { name = 'nvim_lsp' },
+            { name = 'snippy' }
+          },
           {
             { name = 'latex_symbols' },
             {
@@ -509,7 +512,7 @@ require('lazy').setup({
     },
     event = 'VeryLazy',
     opts = {},
-    config = function ()
+    config = function()
       local trouble = require('trouble')
       map('n', 'cd', trouble.toggle)
     end
