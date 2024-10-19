@@ -28,7 +28,6 @@ Everything may change at anytime.
 - telescope.nvim
 - quick word jumping with leap.nvim
 - ai autocompletion via codeium (non-termux)
-- markdown preview
 
 ## Installing Lsps
 
@@ -61,14 +60,6 @@ apt install lua-language-server
 ```
 
 After installation, they should work automatically.
-
-## Preview Markdown
-
-`<ESC>:MarkdownPreview<ENTER>` to start preview
-
-`<ESC>:MarkdownPreviewStop<ENTER>` to stop preview
-
-`<ESC>:MarkdownPreviewToggle<ENTER>` to toggle preview
 
 ## Shortcuts
 
