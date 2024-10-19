@@ -66,22 +66,24 @@ local config = {
       'HiPhish/rainbow-delimiters.nvim',
     },
     build = ':TSUpdate',
-    opts = {
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false
-      },
-      autopairs = {
-        enable = true
-      },
-      indent = {
-        enable = true
-      },
-      rainbow = {
-        enable = true,
-      }
-    },
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        auto_install = true,
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false
+        },
+        autopairs = {
+          enable = true
+        },
+        indent = {
+          enable = true
+        },
+        rainbow = {
+          enable = true,
+        }
+      })
+    end,
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
   },
   {
