@@ -53,7 +53,7 @@ if wakaConfig ~= nil then
   wakaConfig:close()
 end
 
-require('lazy').setup({
+local config = {
   'folke/lazy.nvim',
   {
     'Pocco81/auto-save.nvim',
@@ -74,6 +74,9 @@ require('lazy').setup({
         highlight = {
           enable = true,
           additional_vim_regex_highlighting = false
+        },
+        autopairs = {
+          enable = true
         },
         indent = {
           enable = true
@@ -237,11 +240,12 @@ require('lazy').setup({
   },
   {
     'lukas-reineke/indent-blankline.nvim',
+    dependencies = {
+      'nmac427/guess-indent.nvim',
+    },
     main = "ibl",
     event = 'VeryLazy',
-    config = function()
-      require('ibl').setup()
-    end,
+    opts = {}
   },
   {
     'HiPhish/rainbow-delimiters.nvim',
@@ -263,10 +267,10 @@ require('lazy').setup({
   },
   {
     "windwp/nvim-autopairs",
-    config = function()
-      require("nvim-autopairs").setup({})
-    end,
-    event = 'InsertEnter'
+    opts = {
+      check_ts = true,
+    },
+    event = 'InsertEnter',
   },
   {
     'delphinus/auto-cursorline.nvim',
@@ -414,7 +418,8 @@ require('lazy').setup({
     dependencies = {
       'neovim/nvim-lspconfig',
       'williamboman/mason.nvim',
-      'hrsh7th/cmp-nvim-lsp'
+      'hrsh7th/cmp-nvim-lsp',
+      'nmac427/guess-indent.nvim',
     },
     event = { 'BufReadPost', 'BufNewFile' },
     build = ':MasonUpdate',
@@ -536,5 +541,7 @@ require('lazy').setup({
     'wakatime/vim-wakatime',
     enabled = haveWakaTime,
     lazy = false
-  }
-})
+  },
+}
+
+require('lazy').setup(config)
