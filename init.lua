@@ -297,16 +297,14 @@ local config = {
     'hrsh7th/nvim-cmp',
     dependencies = {
       'dcampos/nvim-snippy',
-      'dcampos/cmp-snippy',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-buffer',
-      'FelipeLema/cmp-async-path',
+      'https://codeberg.org/FelipeLema/cmp-async-path',
       'hrsh7th/cmp-cmdline',
       'onsails/lspkind.nvim',
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
       'f3fora/cmp-spell',
-      'williamboman/mason-lspconfig.nvim',
       'brenoprata10/nvim-highlight-colors',
     },
     event = {
