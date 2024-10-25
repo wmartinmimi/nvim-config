@@ -109,7 +109,8 @@ local config = {
   },
   {
     'nmac427/guess-indent.nvim',
-    opts = {}
+    opts = {},
+    event = { 'BufReadPost', 'BufNewFile' },
   },
   {
     'ggandor/leap.nvim',
