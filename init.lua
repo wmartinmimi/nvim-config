@@ -228,17 +228,6 @@ local config = {
     end
   },
   {
-    'akinsho/git-conflict.nvim',
-    config = function()
-      require('git-conflict').setup()
-    end,
-    event = 'VeryLazy'
-  },
-  {
-    'sindrets/diffview.nvim',
-    cmd = 'DiffviewOpen',
-  },
-  {
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
     opts = {

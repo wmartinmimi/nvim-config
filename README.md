@@ -22,7 +22,6 @@ Everything may change at anytime.
 
 - modernish look (with catppuccin)
 - autocompletion with lsp
-- git interface for commits and conflict managing
 - autosave
 - telescope.nvim
 - quick word jumping with leap.nvim
