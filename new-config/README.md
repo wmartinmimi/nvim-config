@@ -22,20 +22,44 @@ Everything may change at anytime.
 
 - modernish look (with catppuccin)
 - autocompletion with lsp
+- easy lsp install and setup with mason.nvim
 - git interface for commits and conflict managing
 - autosave
 - telescope.nvim
 - quick word jumping with leap.nvim
 - ai autocompletion via codeium (non-termux)
 
-## Adding Lsps
+## Installing Lsps
 
-Open `init.lua`, find `local servers = {}` near the start of file.
+`<ESC>:Mason<ENTER>` to enter Mason.
 
-Add or remove lsp server names as desired.
-lsp server names are from lspconfig.
+Select lsp and press `i` to install.
+Lsp will be automatically setup.
 
-*LSP servers must be installed separately and on $PATH.*
+### Notice Termux users
+
+`clangd`, `rust_analyzer`, `lua_ls` from mason does not work with termux.
+
+Instead, install from package manager, this config is already set to work with installed versions.
+
+For clangd:
+
+```sh
+apt install clangd
+```
+
+For rust analyzer:
+
+```sh
+apt install rust-analyzer
+```
+For lua language server (`lua_ls`):
+
+```sh
+apt install lua-language-server
+```
+
+After installation, they should work automatically.
 
 ## Shortcuts
 
@@ -74,9 +98,25 @@ git reset --hard HEAD
 
 ## Requires
 
-- Nerdfont (for pretty text icon)
+- Nerdfont
 
 Download a nerdfont, paste in ~/.termux, and rename to `font.ttf`.
+
+- Ripgrep
+
+Download ripgrep for fast regex.
+
+```sh
+apt install ripgrep
+```
+
+- Nodejs
+
+Download nodejs for Mason.
+
+```sh
+apt install nodejs
+```
 
 ## Command to exit nvim
 
