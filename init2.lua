@@ -4,34 +4,20 @@ local isTermux = string.find(
   "termux"
 )
 
--- alias --
+-- alias
 local vim = vim
 local opt = vim.opt
 local g = vim.g
 local map = vim.keymap.set
 
--- LSP --
-local servers = {
-  'lua_ls',
-  'clangd',
-  'superhtml',
-  'astro',
-  'ts_ls',
-  'html',
-  'cssls',
-  'bashls',
-  'cmake',
-  'gopls',
-  'typst_lsp',
-}
-
--- options --
+-- options
 opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
 opt.expandtab = true
 opt.lazyredraw = true
 opt.linebreak = true
+
 
 if isTermux then
   opt.tabstop = 2
@@ -420,25 +406,60 @@ local config = {
     end
   },
   {
-    'neovim/nvim-lspconfig',
+    'williamboman/mason.nvim',
+    lazy = false,
+    opts = {}
+  },
+  {
+    'williamboman/mason-lspconfig.nvim',
     dependencies = {
+      'neovim/nvim-lspconfig',
+      'williamboman/mason.nvim',
       'hrsh7th/cmp-nvim-lsp',
+      'nmac427/guess-indent.nvim',
     },
     event = { 'BufReadPost', 'BufNewFile' },
+    build = ':MasonUpdate',
     config = function()
+      local exclude = {
+        -- lsp you want to exclude
+        -- example
+        -- 'clangd',
+      }
+
+      if isTermux then
+        exclude = {
+          'clangd',
+          'rust_analyzer',
+          'lua_ls'
+        }
+      end
+
+      local mason = require('mason-lspconfig')
+      mason.setup({
+        automatic_installation = {
+          exclude = exclude
+        }
+      })
+
       local lsp = require('lspconfig')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      local function setup(server)
+        lsp[server].setup({
+          capabilities = capabilities
+        })
+      end
+      mason.setup_handlers({
+        setup
+      })
 
-      for _, server in pairs(servers) do
-        local config = {}
-        if type(server) == "table" then
-          config = server
-          server = server[1]
-        end
-        if config.capabilities == nil then
-          config.capabilities = capabilities
-        end
-        lsp[server].setup(config)
+      if isTermux then
+        -- lsp installed outside mason
+        -- example:
+        --
+        setup('clangd')
+        setup('rust_analyzer')
+        setup('lua_ls')
       end
 
       -- note: diagnostics are not exclusive to lsp servers
