@@ -253,6 +253,7 @@ local config = {
   },
   {
     'HiPhish/rainbow-delimiters.nvim',
+    event = { 'BufReadPost', 'BufNewFile' },
   },
   {
     'nvim-lualine/lualine.nvim',
