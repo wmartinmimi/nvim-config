@@ -52,20 +52,13 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",     -- latest stable release
+    "--branch=stable", -- latest stable release
     lazypath,
   })
 end
 vim.opt.rtp:prepend(lazypath)
 
 local usrDir = os.getenv("HOME") or os.getenv("USERPROFILE")
-
-local haveWakaTime = false
-local wakaConfig = io.open(usrDir .. "/.wakatime.cfg")
-if wakaConfig ~= nil then
-  haveWakaTime = true
-  wakaConfig:close()
-end
 
 -- plugin configs
 local config = {
@@ -515,7 +508,14 @@ local config = {
   },
   {
     'wakatime/vim-wakatime',
-    enabled = haveWakaTime,
+    enabled = function()
+      local wakaConfig = io.open(usrDir .. "/.wakatime.cfg")
+      if wakaConfig ~= nil then
+        wakaConfig:close()
+        return true
+      end
+      return false
+    end,
     lazy = false
   },
 }
