@@ -416,6 +416,7 @@ local config = {
     config = function()
       local lsp = require('lspconfig')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       for _, server in pairs(servers) do
         local config = {}
@@ -480,7 +481,7 @@ local config = {
       vim.api.nvim_create_user_command('LspConfigDocs', function(_)
         local docs = vim.fn.stdpath("data") .. "/lazy/nvim-lspconfig/doc/configs.md"
         vim.cmd('view ' .. docs)
-      end ,{})
+      end, {})
     end
   },
   {
