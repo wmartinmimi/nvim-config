@@ -411,7 +411,7 @@ local config = {
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
     },
-    event = { 'BufReadPost', 'BufNewFile' },
+    event = { 'BufReadPost', 'BufNewFile', 'VeryLazy' },
     config = function()
       local lsp = require('lspconfig')
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -475,6 +475,11 @@ local config = {
           map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
+
+      vim.api.nvim_create_user_command('LspConfigDocs', function(_)
+        local docs = vim.fn.stdpath("data") .. "/lazy/nvim-lspconfig/doc/configs.md"
+        vim.cmd('view ' .. docs)
+      end ,{})
     end
   },
   {
