@@ -67,6 +67,7 @@ if wakaConfig ~= nil then
   wakaConfig:close()
 end
 
+-- plugin configs
 local config = {
   'folke/lazy.nvim',
   {
