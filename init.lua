@@ -23,6 +23,7 @@ local servers = {
   'cmake',
   'gopls',
   'typst_lsp',
+  'zls',
 }
 
 -- options --
