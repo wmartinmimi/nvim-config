@@ -27,7 +27,7 @@ local servers = {
 }
 
 -- workarounds --
-g.zig_fmt_autosave = false
+g.zig_fmt_autosave = false -- required until nvim v0.11.0
 
 -- options --
 opt.number = true
