@@ -30,6 +30,8 @@ local servers = {
 g.zig_fmt_autosave = false -- required until nvim v0.11.0
 
 -- options --
+opt.encoding = 'utf8'
+opt.fileformat = 'unix'
 opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
