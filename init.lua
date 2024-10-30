@@ -26,6 +26,9 @@ local servers = {
   'zls',
 }
 
+-- workarounds --
+g.zig_fmt_autosave = false
+
 -- options --
 opt.number = true
 opt.relativenumber = true
