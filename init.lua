@@ -24,6 +24,7 @@ local servers = {
   'gopls',
   'typst_lsp',
   'zls',
+  'pylsp',
 }
 
 -- workarounds --
