@@ -22,7 +22,11 @@ local servers = {
   'bashls',
   'cmake',
   'gopls',
-  'typst_lsp',
+  {
+    'typst_lsp',
+    -- temp fix to be removed on next nvim release
+    offset_encoding = "utf-8", -- fix for release: v0.10.2
+  },
   'zls',
   'pylsp',
 }
