@@ -38,6 +38,8 @@ lsp server names are from lspconfig.
 
 Run `:LspConfigDocs` to list all possible lsp integrations with some instructions on how to install them.
 
+Some of the lsp presets here is configured to use the `bun` runtime.
+
 ## Shortcuts
 
 - `tt`: opens Telescope.nvim
