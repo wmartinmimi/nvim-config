@@ -15,11 +15,34 @@ local servers = {
   'lua_ls',
   'clangd',
   'superhtml',
-  'astro',
-  'ts_ls',
-  'html',
-  'cssls',
-  'bashls',
+  {
+    'astro',
+    cmd = { 'bunx', '--bun', 'astro-ls', '--stdio' },
+  },
+  {
+    'ts_ls',
+    cmd = { 'bunx', '--bun', 'typescript-language-server', '--stdio' },
+  },
+  {
+    'html',
+    cmd = { 'bunx', '--bun', 'vscode-html-language-server', '--stdio' },
+  },
+  {
+    'eslint',
+    cmd = { 'bunx', '--bun', 'vscode-eslint-language-server', '--stdio' },
+  },
+  {
+    'cssls',
+    cmd = { 'bunx', '--bun', 'vscode-css-language-server', '--stdio' },
+  },
+  {
+    'jsonls',
+    cmd = { 'bunx', '--bun', 'vscode-json-language-server', '--stdio' },
+  },
+  {
+    'bashls',
+    cmd = { 'bunx', '--bun', 'bash-language-server', 'start' },
+  },
   'cmake',
   'gopls',
   {
@@ -520,14 +543,7 @@ local config = {
   },
   {
     'wakatime/vim-wakatime',
-    enabled = function()
-      local wakaConfig = io.open(usrDir .. "/.wakatime.cfg")
-      if wakaConfig ~= nil then
-        wakaConfig:close()
-        return true
-      end
-      return false
-    end,
+    enabled = true,
     lazy = false
   },
 }
