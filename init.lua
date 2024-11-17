@@ -592,6 +592,8 @@ local config = {
       },
     },
     config = function()
+      local dap = require('dap')
+
       local direction
       if isTermux then
         direction = 'horizontal'
@@ -599,6 +601,35 @@ local config = {
         direction = 'vertical'
       end
       require('dap').defaults.fallback.terminal_win_cmd = direction .. ' belowright split new'
+
+      dap.adapters.lldb = {
+        type = 'executable',
+        command = '/usr/sbin/lldb-dap', -- adjust as needed, must be absolute path
+        name = 'lldb'
+      }
+      dap.configurations.cpp = {
+        {
+          name = 'Launch',
+          type = 'lldb',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+          args = {},
+          env = function()
+            local variables = {}
+            for k, v in pairs(vim.fn.environ()) do
+              table.insert(variables, string.format("%s=%s", k, v))
+            end
+            return variables
+          end,
+        },
+      }
+      dap.configurations.c = dap.configurations.cpp
+      dap.configurations.rust = dap.configurations.cpp
+      dap.configurations.zig = dap.configurations.cpp
     end,
     lazy = true,
   },
@@ -619,6 +650,16 @@ local config = {
     ft = { 'python' },
     config = function()
       require('dap-python').setup('python')
+    end,
+  },
+  {
+    'leoluz/nvim-dap-go',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    ft = { 'go' },
+    config = function()
+      require('dap-go').setup()
     end,
   },
   {
