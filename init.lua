@@ -92,8 +92,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local usrDir = os.getenv("HOME") or os.getenv("USERPROFILE")
-
 -- plugin configs
 local config = {
   'folke/lazy.nvim',
@@ -522,6 +520,106 @@ local config = {
     keys = {
       { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
     },
+  },
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'theHamsta/nvim-dap-virtual-text',
+    },
+    keys = {
+      {
+        '<leader>dc',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'launch debugger',
+      },
+      {
+        '<leader>db',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'toggle debugger breakpoint',
+      },
+      {
+        '<leader>ds',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'debugger step over',
+      },
+      {
+        '<leader>di',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'debugger step into',
+      },
+      {
+        '<leader>do',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'debugger step out',
+      },
+      {
+        '<leader>dt',
+        function()
+          require('dap').terminate()
+        end,
+        desc = 'terminate debugger',
+      },
+      {
+        '<leader>dl',
+        function()
+          require('dap').list_breakpoints()
+        end,
+        desc = 'list all breakpoints',
+      },
+      {
+        '<leader>dd',
+        function()
+          require('dap').clear_breakpoints()
+        end,
+        desc = 'delete all breakpoints',
+      },
+      {
+        '<leader>dr',
+        function()
+          require('dap').run_to_cursor()
+        end,
+        desc = 'debugger run to cursor',
+      },
+    },
+    config = function()
+      local direction
+      if isTermux then
+        direction = 'horizontal'
+      else
+        direction = 'vertical'
+      end
+      require('dap').defaults.fallback.terminal_win_cmd = direction .. ' belowright split new'
+    end,
+    lazy = true,
+  },
+  {
+    'theHamsta/nvim-dap-virtual-text',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    opts = {
+      highlight_new_as_changed = true,
+      all_references = true,
+    },
+    lazy = true,
+  },
+  {
+    'mfussenegger/nvim-dap-python',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    ft = { 'python' },
+    config = function()
+      require('dap-python').setup('python')
+    end,
   },
   {
     'Exafunction/codeium.vim',
