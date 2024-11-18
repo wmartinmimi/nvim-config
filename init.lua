@@ -43,6 +43,7 @@ local servers = {
     'bashls',
     cmd = { 'bunx', '--bun', 'bash-language-server', 'start' },
   },
+  'rust_analyzer',
   'cmake',
   'gopls',
   {
