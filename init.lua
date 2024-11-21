@@ -47,9 +47,13 @@ local servers = {
   'cmake',
   'gopls',
   {
-    'typst_lsp',
+    'tinymist',
     -- temp fix to be removed on next nvim release
+    single_file_support = true,
     offset_encoding = "utf-8", -- fix for release: v0.10.2
+    settings = {
+      exportPdf = "onSave",
+    },
   },
   'zls',
   'pylsp',
@@ -520,6 +524,16 @@ local config = {
     opts = {},
     keys = {
       { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
+    },
+  },
+  {
+    'chomosuke/typst-preview.nvim',
+    ft = 'typst',
+    opts = {
+      dependencies_bin = {
+        ['tinymist'] = nil,
+        ['websocat'] = nil
+      }
     },
   },
   {
