@@ -47,12 +47,13 @@ local servers = {
   'cmake',
   'gopls',
   {
-    'tinymist',
+    'tinymist', -- mem leak
     -- temp fix to be removed on next nvim release
     single_file_support = true,
     offset_encoding = "utf-8", -- fix for release: v0.10.2
     settings = {
       exportPdf = "onSave",
+      formatterMode = "typstyle",
     },
   },
   'zls',
@@ -531,8 +532,8 @@ local config = {
     ft = 'typst',
     opts = {
       dependencies_bin = {
-        ['tinymist'] = nil,
-        ['websocat'] = nil
+        ['tinymist'] = 'tinymist',
+        ['websocat'] = 'websocat',
       }
     },
   },
