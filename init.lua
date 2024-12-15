@@ -57,7 +57,21 @@ local servers = {
     },
   },
   'zls',
-  'pylsp',
+  -- python autocomplete as ruff does not do that
+  {
+    'pylsp',
+    settings = {
+      pylsp = {
+        plugins = {
+          -- uv tool install python-lsp-server --with python-lsp-ruff
+          -- uv tool install ruff
+          ruff = {
+            enabled = true,
+          }
+        }
+      }
+    }
+  },
 }
 
 -- workarounds --
