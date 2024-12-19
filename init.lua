@@ -1,7 +1,7 @@
 -- check if termux, need special workarounds
 local isTermux = string.find(
-  os.getenv("PREFIX") or "nil",
-  "termux"
+  os.getenv('PREFIX') or 'nil',
+  'termux'
 )
 
 -- set ai autocomplete
@@ -53,10 +53,10 @@ local servers = {
     'tinymist', -- mem leak
     -- temp fix to be removed on next nvim release
     single_file_support = true,
-    offset_encoding = "utf-8", -- fix for release: v0.10.2
+    offset_encoding = 'utf-8', -- fix for release: v0.10.2
     settings = {
-      exportPdf = "onSave",
-      formatterMode = "typstyle",
+      exportPdf = 'onSave',
+      formatterMode = 'typstyle',
     },
   },
   'zls',
@@ -89,6 +89,7 @@ opt.termguicolors = true
 opt.expandtab = true
 opt.lazyredraw = true
 opt.linebreak = true
+opt.scrolloff = 999
 
 if isTermux then
   opt.tabstop = 2
@@ -102,14 +103,14 @@ g.do_filetype_lua = true
 g.did_load_filetypes = false
 
 -- bootstrapping
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
     lazypath,
   })
 end
@@ -239,15 +240,15 @@ local config = {
     },
     cmd = 'Telescope',
     config = function()
-      local trouble = require("trouble.sources.telescope")
+      local trouble = require('trouble.sources.telescope')
 
-      local telescope = require("telescope")
+      local telescope = require('telescope')
 
       telescope.setup {
         defaults = {
           mappings = {
-            i = { ["<c-t>"] = trouble.open },
-            n = { ["<c-t>"] = trouble.open },
+            i = { ['<c-t>'] = trouble.open },
+            n = { ['<c-t>'] = trouble.open },
           },
         },
       }
@@ -296,7 +297,7 @@ local config = {
     dependencies = {
       'nmac427/guess-indent.nvim',
     },
-    main = "ibl",
+    main = 'ibl',
     event = 'VeryLazy',
     opts = {}
   },
@@ -318,7 +319,7 @@ local config = {
     lazy = true
   },
   {
-    "windwp/nvim-autopairs",
+    'windwp/nvim-autopairs',
     opts = {
       check_ts = true,
     },
@@ -344,13 +345,14 @@ local config = {
     event = 'VeryLazy',
   },
   {
-    'hrsh7th/nvim-cmp',
+    'iguanacucumber/magazine.nvim',
+    name = 'nvim-cmp',
     dependencies = {
       'dcampos/nvim-snippy',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
+      'cmp-nvim-lsp',
+      { 'iguanacucumber/mag-buffer',  name = 'cmp-buffer' },
       'https://codeberg.org/FelipeLema/cmp-async-path',
-      'hrsh7th/cmp-cmdline',
+      { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
       'onsails/lspkind.nvim',
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
@@ -373,15 +375,24 @@ local config = {
       local compare = require('cmp.config.compare')
 
       cmp.setup({
+        experimental = {
+          ghost_text = true,
+        },
+        view = {
+          entries = {
+            name = "custom",
+            vertical_positioning = "above",
+          }
+        },
         formatting = {
           format = function(entry, item)
-            local lspkind_item = require("lspkind").cmp_format({
+            local lspkind_item = require('lspkind').cmp_format({
               ellipsis_char = '..',
               symbol_map = {
-                Codeium = "",
+                Codeium = '',
               }
             })(entry, item)
-            local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
+            local color_item = require('nvim-highlight-colors').format(entry, { kind = item.kind })
             item = lspkind_item
             -- nvim-highlight-colors integration
             if color_item.abbr_hl_group then
@@ -412,10 +423,10 @@ local config = {
           }
         },
         mapping = {
-          ['<UP>'] = cmp_map(cmp_map.select_prev_item(), { 'i', 's', 'c' }),
+          ['<Up>'] = cmp_map(cmp_map.select_prev_item(), { 'i', 's', 'c' }),
           ['<Down>'] = cmp_map(cmp_map.select_next_item(), { 'i', 's', 'c' }),
           ['<M-Enter>'] = cmp_map(cmp_map.abort(), { 'i', 's', 'c' }),
-          ["<Enter>"] = cmp_map(function(fallback)
+          ['<Enter>'] = cmp_map(function(fallback)
             -- enter selected completion
             if cmp.visible() then
               local entry = cmp.get_selected_entry()
@@ -467,7 +478,7 @@ local config = {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
+      { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp' },
     },
     event = { 'BufReadPost', 'BufNewFile', 'VeryLazy' },
     config = function()
@@ -477,7 +488,7 @@ local config = {
 
       for _, server in pairs(servers) do
         local config = {}
-        if type(server) == "table" then
+        if type(server) == 'table' then
           config = server
           server = server[1]
         end
@@ -536,7 +547,7 @@ local config = {
       })
 
       vim.api.nvim_create_user_command('LspConfigDocs', function(_)
-        local docs = vim.fn.stdpath("data") .. "/lazy/nvim-lspconfig/doc/configs.md"
+        local docs = vim.fn.stdpath('data') .. '/lazy/nvim-lspconfig/doc/configs.md'
         vim.cmd('view ' .. docs)
         vim.cmd('setlocal nomodifiable')
       end, {})
@@ -574,8 +585,8 @@ local config = {
     'Exafunction/codeium.nvim',
     event = 'InsertEnter',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
+      'nvim-lua/plenary.nvim',
+      'nvim-cmp',
     },
     cmd = 'Codeium',
     enabled = ai_cmp,
