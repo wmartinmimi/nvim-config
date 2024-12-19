@@ -4,6 +4,9 @@ local isTermux = string.find(
   "termux"
 )
 
+-- set ai autocomplete
+local ai_cmp = not isTermux
+
 -- alias --
 local vim = vim
 local opt = vim.opt
@@ -353,6 +356,7 @@ local config = {
       'hrsh7th/cmp-emoji',
       'f3fora/cmp-spell',
       'brenoprata10/nvim-highlight-colors',
+      'Exafunction/codeium.nvim'
     },
     event = {
       'InsertEnter',
@@ -371,8 +375,14 @@ local config = {
       cmp.setup({
         formatting = {
           format = function(entry, item)
+            local lspkind_item = require("lspkind").cmp_format({
+              ellipsis_char = '..',
+              symbol_map = {
+                Codeium = "",
+              }
+            })(entry, item)
             local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
-            item = require("lspkind").cmp_format({ ellipsis_char = '..' })(entry, item)
+            item = lspkind_item
             -- nvim-highlight-colors integration
             if color_item.abbr_hl_group then
               item.kind_hl_group = color_item.abbr_hl_group
@@ -422,6 +432,7 @@ local config = {
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = cmp.config.sources({
+            { name = 'codeium' },
             { name = 'nvim_lsp' },
             { name = 'snippy' }
           },
@@ -560,22 +571,15 @@ local config = {
     },
   },
   {
-    'Exafunction/codeium.vim',
+    'Exafunction/codeium.nvim',
     event = 'InsertEnter',
-    cmd = {
-      'Codeium',
-      'CodeiumEnable',
-      'CodeiumAuto'
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
     },
-    enabled = --[[ not isTermux ]] false,
-    keys = {
-      { '<M-Right>', function() return vim.fn['codeium#Accept']() end,             mode = 'i', expr = true },
-      { '<M-Down>',  function() return vim.fn['codeium#CycleCompletions'](1) end,  mode = 'i', expr = true },
-      { '<M-Up>',    function() return vim.fn['codeium#CycleCompletions'](-1) end, mode = 'i', expr = true },
-    },
-    config = function()
-      vim.g.codeium_disable_bindings = 1
-    end,
+    cmd = 'Codeium',
+    enabled = ai_cmp,
+    opts = {},
   },
   {
     'wakatime/vim-wakatime',
