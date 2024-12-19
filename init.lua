@@ -581,11 +581,6 @@ local config = {
     enabled = ai_cmp,
     opts = {},
   },
-  {
-    'wakatime/vim-wakatime',
-    enabled = true,
-    lazy = false
-  },
 }
 
 require('lazy').setup(config)
