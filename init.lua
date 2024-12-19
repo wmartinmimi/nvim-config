@@ -545,12 +545,6 @@ local config = {
           map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
-
-      vim.api.nvim_create_user_command('LspConfigDocs', function(_)
-        local docs = vim.fn.stdpath('data') .. '/lazy/nvim-lspconfig/doc/configs.md'
-        vim.cmd('view ' .. docs)
-        vim.cmd('setlocal nomodifiable')
-      end, {})
     end
   },
   {

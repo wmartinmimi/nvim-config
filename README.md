@@ -36,7 +36,7 @@ lsp server names are from lspconfig.
 
 *LSP servers must be installed separately and on $PATH.*
 
-Run `:LspConfigDocs` to list all possible lsp integrations with some instructions on how to install them.
+Run `:help lspconfig-all` to list all possible lsp integrations with some instructions on how to install them.
 
 Some of the lsp presets here is configured to use the `bun` runtime.
 
