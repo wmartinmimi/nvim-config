@@ -442,30 +442,30 @@ local config = {
           ['<C-j>'] = cmp_map(cmp_map.scroll_docs(1), { 'i', 's', 'c' }),
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
-        sources = cmp.config.sources({
-            { name = 'codeium' },
-            { name = 'nvim_lsp' },
-            { name = 'snippy' }
+        sources = {
+          { name = 'codeium' },
+          { name = 'nvim_lsp' },
+          { name = 'snippy' }
+        },
+        {
+          { name = 'latex_symbols' },
+          {
+            name = 'emoji',
+            option = {
+              insert = true
+            }
           },
           {
-            { name = 'latex_symbols' },
-            {
-              name = 'emoji',
-              option = {
-                insert = true
-              }
-            },
-            {
-              name = 'spell',
-              option = {
-                keep_all_entries = true,
-                enable_in_context = function()
-                  return require('cmp.config.context').in_treesitter_capture('spell')
-                end
-              }
-            },
-            { name = 'buffer' }
-          })
+            name = 'spell',
+            option = {
+              keep_all_entries = true,
+              enable_in_context = function()
+                return require('cmp.config.context').in_treesitter_capture('spell')
+              end
+            }
+          },
+          { name = 'buffer' }
+        }
       })
       cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmp_map.preset.cmdline(),
