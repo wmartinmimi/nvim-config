@@ -542,6 +542,14 @@ local config = {
     },
   },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    opts = {}
+  },
+  {
     'chomosuke/typst-preview.nvim',
     ft = 'typst',
     opts = {
