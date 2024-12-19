@@ -380,8 +380,8 @@ local config = {
         },
         view = {
           entries = {
-            name = "custom",
-            vertical_positioning = "above",
+            name = 'custom',
+            vertical_positioning = 'above',
           }
         },
         formatting = {
