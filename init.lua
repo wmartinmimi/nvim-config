@@ -102,6 +102,9 @@ end
 g.do_filetype_lua = true
 g.did_load_filetypes = false
 
+-- quicker loader
+vim.loader.enable()
+
 -- bootstrapping
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -178,7 +181,6 @@ local config = {
   },
   {
     "folke/flash.nvim",
-    event = "VeryLazy",
     opts = {},
     keys = {
       {
@@ -560,6 +562,7 @@ local config = {
       'nvim-tree/nvim-web-devicons',
       'nvim-treesitter/nvim-treesitter',
     },
+    ft = 'markdown',
     opts = {}
   },
   {
@@ -569,7 +572,10 @@ local config = {
   },
   {
     'chomosuke/typst-preview.nvim',
-    ft = 'typst',
+    cmd = {
+      'TypstPreview',
+      'TypstPreviewToggle',
+    },
     opts = {
       dependencies_bin = {
         ['tinymist'] = 'tinymist',
