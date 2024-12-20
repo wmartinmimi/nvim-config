@@ -24,7 +24,7 @@ Everything may change at anytime.
 - autocompletion with lsp
 - autosave
 - telescope.nvim
-- quick word jumping with leap.nvim
+- quick word jumping with flash.nvim
 - ai autocompletion via codeium (non-termux)
 
 ## Adding Lsps
@@ -45,11 +45,6 @@ Some of the lsp presets here is configured to use the `bun` runtime.
 - `tt`: opens Telescope.nvim
 - `ff`: opens nvim-tree
 - `cf`: formats code
-- `Alt-/`: word jump
-- `Alt-Right`: accept codeium autocomplete
-- `Alt-Up`: switch to next codeium autocomplete
-- `Alt-Down`: switch to previous codeium autocomplete
-- `Alt-Left`: cancel normal autocomplete
 
 ### Notice Termux users
 

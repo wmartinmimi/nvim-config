@@ -177,44 +177,41 @@ local config = {
     event = { 'BufReadPost', 'BufNewFile' },
   },
   {
-    'ggandor/leap.nvim',
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
     keys = {
-      { '<M-/>', desc = 'run leap.nvim' },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function() require("flash").jump() end,
+        desc = "Flash"
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function() require("flash").treesitter() end,
+        desc = "Flash Treesitter"
+      },
+      {
+        "r",
+        mode = "o",
+        function() require("flash").remote() end,
+        desc = "Remote Flash"
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function() require("flash").treesitter_search() end,
+        desc = "Treesitter Search"
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function() require("flash").toggle() end,
+        desc = "Toggle Flash Search"
+      },
     },
-    config = function()
-      local hl = vim.api.nvim_set_hl
-
-      hl(0, 'LeapBackdrop', {
-        link = 'Comment'
-      })
-      hl(0, 'LeapMatch', {
-        fg = '#89b4fa',
-        bold = true,
-        nocombine = true
-      })
-      hl(0, 'LeapLabelPrimary', {
-        fg = '#f38ba8',
-        bold = true,
-        nocombine = true
-      })
-      hl(0, 'LeapLabelSecondary', {
-        fg = '#f9e2af',
-        bold = true,
-        nocombine = true
-      })
-      require('leap').opts.highlight_unlabeled_phase_one_targets = true
-
-      local function leap()
-        local focusable_windows_on_tabpage = vim.tbl_filter(
-          function(win) return vim.api.nvim_win_get_config(win).focusable end,
-          vim.api.nvim_tabpage_list_wins(0)
-        )
-        require('leap').leap { target_windows = focusable_windows_on_tabpage }
-      end
-
-      map('', '<M-/>', leap)
-      map('i', '<M-/>', leap)
-    end
   },
   {
     'mg979/vim-visual-multi',
