@@ -563,6 +563,11 @@ local config = {
     opts = {}
   },
   {
+    'stevearc/quicker.nvim',
+    event = "FileType qf",
+    opts = {},
+  },
+  {
     'chomosuke/typst-preview.nvim',
     ft = 'typst',
     opts = {
