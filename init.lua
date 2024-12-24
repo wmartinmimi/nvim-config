@@ -381,6 +381,7 @@ local config = {
           entries = {
             name = 'custom',
             vertical_positioning = 'above',
+            selection_order = 'bottom_up',
           }
         },
         formatting = {
@@ -422,21 +423,35 @@ local config = {
           }
         },
         mapping = {
-          ['<Up>'] = cmp_map(cmp_map.select_prev_item(), { 'i', 's', 'c' }),
-          ['<Down>'] = cmp_map(cmp_map.select_next_item(), { 'i', 's', 'c' }),
-          ['<M-Enter>'] = cmp_map(cmp_map.abort(), { 'i', 's', 'c' }),
-          ['<Enter>'] = cmp_map(function(fallback)
-            -- enter selected completion
+          ['<Down>'] = cmp_map(function(fallback)
             if cmp.visible() then
-              local entry = cmp.get_selected_entry()
-              if entry then
-                cmp.confirm()
+              if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                cmp.select_next_item()
               else
-                fallback()
+                cmp.select_prev_item()
               end
             else
               fallback()
             end
+          end, { 'i', 's', 'c' }),
+          ['<Up>'] = cmp_map(function(fallback)
+            if cmp.visible() then
+              if cmp.core.view.custom_entries_view:is_direction_top_down() then
+                cmp.select_prev_item()
+              else
+                cmp.select_next_item()
+              end
+            else
+              fallback()
+            end
+          end, { 'i', 's', 'c' }),
+          ['<M-Left>'] = cmp_map(cmp_map.abort(), { 'i', 's', 'c' }),
+          ['<M-Right>'] = cmp_map(function(fallback)
+            -- enter selected completion
+            if cmp.visible() then
+              cmp.confirm({ select = true })
+            end
+            fallback()
           end, { 'i', 's', 'c' }),
           ['<C-j>'] = cmp_map(cmp_map.scroll_docs(1), { 'i', 's', 'c' }),
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
