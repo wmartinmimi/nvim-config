@@ -527,10 +527,26 @@ local config = {
           print('errors enabled: false')
         end
         vim.diagnostic.config({
+          signs = {
+            text = {
+              [vim.diagnostic.severity.ERROR] = '',
+              [vim.diagnostic.severity.WARN] = '',
+            },
+          },
           virtual_text = visible,
           underline = visible,
         })
       end)
+      vim.diagnostic.config({
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+          },
+        },
+        virtual_text = visible,
+        underline = visible,
+      })
 
       map({ 'n', 'x' }, 'cf', function()
         print('no lsp, please format with gg=G')
