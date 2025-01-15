@@ -355,9 +355,12 @@ local config = {
       'onsails/lspkind.nvim',
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
+      'PhilRunninger/cmp-rpncalc',
+      'chrisgrieser/cmp-nerdfont',
+      'https://codeberg.org/FelipeLema/cmp-async-path',
       'f3fora/cmp-spell',
       'brenoprata10/nvim-highlight-colors',
-      'Exafunction/codeium.nvim'
+      'Exafunction/codeium.nvim',
     },
     event = {
       'InsertEnter',
@@ -457,18 +460,14 @@ local config = {
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = {
-          { name = 'codeium' },
-          { name = 'nvim_lsp' },
-          { name = 'snippy' }
-        },
-        {
-          { name = 'latex_symbols' },
-          {
-            name = 'emoji',
-            option = {
-              insert = true
-            }
-          },
+          { name = 'codeium', priority = 1100 },
+          { name = 'nvim_lsp', priority = 1000 },
+          { name = 'snippy', priority = 1000 },
+          { name = 'async_path', priority = 600 },
+          { name = 'latex_symbols', priority = 400 },
+          { name = 'nerdfont', priority = 400 },
+          { name = 'emoji', priority = 400 },
+          { name = 'rpncalc', priority = 800 },
           {
             name = 'spell',
             option = {
@@ -476,9 +475,9 @@ local config = {
               enable_in_context = function()
                 return require('cmp.config.context').in_treesitter_capture('spell')
               end
-            }
+            },
+            priority = 200,
           },
-          { name = 'buffer' }
         }
       })
       cmp.setup.cmdline({ '/', '?' }, {
