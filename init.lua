@@ -18,34 +18,13 @@ local servers = {
   'lua_ls',
   'clangd',
   'superhtml',
-  {
-    'astro',
-    cmd = { 'bunx', '--bun', 'astro-ls', '--stdio' },
-  },
-  {
-    'ts_ls',
-    cmd = { 'bunx', '--bun', 'typescript-language-server', '--stdio' },
-  },
-  {
-    'html',
-    cmd = { 'bunx', '--bun', 'vscode-html-language-server', '--stdio' },
-  },
-  {
-    'eslint',
-    cmd = { 'bunx', '--bun', 'vscode-eslint-language-server', '--stdio' },
-  },
-  {
-    'cssls',
-    cmd = { 'bunx', '--bun', 'vscode-css-language-server', '--stdio' },
-  },
-  {
-    'jsonls',
-    cmd = { 'bunx', '--bun', 'vscode-json-language-server', '--stdio' },
-  },
-  {
-    'bashls',
-    cmd = { 'bunx', '--bun', 'bash-language-server', 'start' },
-  },
+  'astro',
+  'ts_ls',
+  'html',
+  'eslint',
+  'cssls',
+  'jsonls',
+  'bashls',
   'rust_analyzer',
   'cmake',
   'gopls',
