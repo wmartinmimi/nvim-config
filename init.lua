@@ -369,7 +369,7 @@ local config = {
     config = function()
       -- required by spell
       vim.opt.spell = true
-      vim.opt.spelllang = { 'en_us' }
+      vim.opt.spelllang = { 'en_gb', 'en_us' }
 
 
       local cmp = require('cmp')
