@@ -15,19 +15,6 @@ local map = vim.keymap.set
 
 -- LSP --
 local servers = {
-  'lua_ls',
-  'clangd',
-  'superhtml',
-  'astro',
-  'ts_ls',
-  'html',
-  'eslint',
-  'cssls',
-  'jsonls',
-  'bashls',
-  'rust_analyzer',
-  'cmake',
-  'gopls',
   {
     'tinymist', -- mem leak
     -- temp fix to be removed on next nvim release
@@ -38,18 +25,14 @@ local servers = {
       formatterMode = 'typstyle',
     },
   },
-  'zls',
   -- python autocomplete as ruff does not do that
   {
     'pylsp',
     settings = {
       pylsp = {
         plugins = {
-          -- uv tool install python-lsp-server --with python-lsp-ruff
-          -- uv tool install ruff
-          ruff = {
-            enabled = true,
-          }
+          -- linting provided by ruff
+          ruff = { enabled = true },
         }
       }
     }
@@ -468,26 +451,108 @@ local config = {
     end
   },
   {
-    'neovim/nvim-lspconfig',
+    'folke/trouble.nvim',
     dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    },
+    opts = {},
+    keys = {
+      { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
+    },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    ft = 'markdown',
+    opts = {}
+  },
+  {
+    'stevearc/quicker.nvim',
+    event = "FileType qf",
+    opts = {},
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    event = 'VeryLazy',
+    opts = {
+      signcolumn = true,
+      attach_to_untracked = true,
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text_pos = 'right_align',
+        virt_text_priority = 1000,
+        delay = 50,
+      },
+    },
+  },
+  {
+    'chomosuke/typst-preview.nvim',
+    cmd = {
+      'TypstPreview',
+      'TypstPreviewToggle',
+    },
+    opts = {
+      dependencies_bin = {
+        ['tinymist'] = 'tinymist',
+        ['websocat'] = 'websocat',
+      }
+    },
+  },
+  {
+    'williamboman/mason.nvim',
+    lazy = true,
+    opts = {},
+  },
+  {
+    'williamboman/mason-lspconfig.nvim',
+    dependencies = {
+      'williamboman/mason.nvim',
       { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp' },
+     'neovim/nvim-lspconfig',
     },
     event = { 'BufReadPost', 'BufNewFile', 'VeryLazy' },
     config = function()
-      local lsp = require('lspconfig')
+      -- setting up dependencies
+      require('mason-lspconfig').setup()
+
+      -- setup capabilities
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+      -- default handler to process lsp servers
+      local default_config = function(server)
+          local config = {}
+          if type(server) == 'table' then
+            config = server
+            server = server[1]
+          end
+          if config.capabilities == nil then
+            config.capabilities = capabilities
+          end
+          return {name = server, config = config}
+      end
+
+      local lsp_configs = {}
+
+      -- process servers installed from mason
+      local mason_servers = require('mason-lspconfig').get_installed_servers()
+      for _, server in pairs(mason_servers) do
+        local config = default_config(server)
+        lsp_configs[config.name] = config.config
+      end
+
+      -- process user server configurations
       for _, server in pairs(servers) do
-        local config = {}
-        if type(server) == 'table' then
-          config = server
-          server = server[1]
-        end
-        if config.capabilities == nil then
-          config.capabilities = capabilities
-        end
-        lsp[server].setup(config)
+        local config = default_config(server)
+        lsp_configs[config.name] = config.config
+      end
+
+      -- setup servers
+      for server, config in pairs(lsp_configs) do
+        require('lspconfig')[server].setup(config)
       end
 
       -- note: diagnostics are not exclusive to lsp servers
@@ -553,58 +618,8 @@ local config = {
           map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
-    end
-  },
-  {
-    'folke/trouble.nvim',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons'
-    },
-    opts = {},
-    keys = {
-      { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
-    },
-  },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    ft = 'markdown',
-    opts = {}
-  },
-  {
-    'stevearc/quicker.nvim',
-    event = "FileType qf",
-    opts = {},
-  },
-  {
-    'lewis6991/gitsigns.nvim',
-    event = 'VeryLazy',
-    opts = {
-      signcolumn = true,
-      attach_to_untracked = true,
-      current_line_blame = true,
-      current_line_blame_opts = {
-        virt_text_pos = 'right_align',
-        virt_text_priority = 1000,
-        delay = 50,
-      },
-    },
-  },
-  {
-    'chomosuke/typst-preview.nvim',
-    cmd = {
-      'TypstPreview',
-      'TypstPreviewToggle',
-    },
-    opts = {
-      dependencies_bin = {
-        ['tinymist'] = 'tinymist',
-        ['websocat'] = 'websocat',
-      }
-    },
+
+    end,
   },
   {
     'Exafunction/codeium.nvim',

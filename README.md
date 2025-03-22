@@ -20,6 +20,7 @@ Everything may change at anytime.
 
 ## Features
 
+- mason for lsp installations
 - modernish look (with catppuccin)
 - autocompletion with lsp
 - autosave
@@ -28,6 +29,13 @@ Everything may change at anytime.
 - ai autocompletion via codeium (non-termux)
 
 ## Adding Lsps
+
+### Easy
+
+Open `:Mason` and search for any desired lsp.
+You could use `:LspInstall <lsp name>` as well.
+
+### Advanced
 
 Open `init.lua`, find `local servers = {}` near the start of file.
 
