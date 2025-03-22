@@ -27,6 +27,7 @@ Everything may change at anytime.
 - telescope.nvim
 - quick word jumping with flash.nvim
 - ai autocompletion via codeium (non-termux)
+- debugging support with nvim dap
 
 ## Adding Lsps
 

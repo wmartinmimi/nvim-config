@@ -631,6 +631,64 @@ local config = {
     enabled = ai_cmp,
     opts = {},
   },
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
+      'rcarriga/nvim-dap-ui',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      -- mason integration
+      require('mason-nvim-dap').setup {
+        handlers = {
+          function (config) -- default configuration
+            require('mason-nvim-dap').default_setup(config)
+          end
+        }
+      }
+
+      -- ui for debugging
+      local dap, dapui = require("dap"), require("dapui")
+      dap.listeners.before.attach.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        dapui.close()
+      end
+    end,
+    lazy = true,
+  },
+ {
+    'rcarriga/nvim-dap-ui',
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+    },
+    opts = {},
+    lazy = true,
+  },
+  {
+    'theHamsta/nvim-dap-virtual-text',
+    dependencies = {
+      'mfussenegger/nvim-dap',
+    },
+    opts = {},
+    cmd = {
+      'DapContinue',
+      'DapNew',
+      'DapToggleBreakpoint',
+      'DapInstall',
+      'DapUninstall',
+      'DapToggleRepl',
+    },
+  },
 }
 
 require('lazy').setup(config)
