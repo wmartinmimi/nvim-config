@@ -422,14 +422,14 @@ local config = {
           ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
         },
         sources = {
-          { name = 'codeium', priority = 1100 },
-          { name = 'nvim_lsp', priority = 1000 },
-          { name = 'snippy', priority = 1000 },
-          { name = 'async_path', priority = 600 },
+          { name = 'codeium',       priority = 1100 },
+          { name = 'nvim_lsp',      priority = 1000 },
+          { name = 'snippy',        priority = 1000 },
+          { name = 'async_path',    priority = 600 },
           { name = 'latex_symbols', priority = 400 },
-          { name = 'nerdfont', priority = 400 },
-          { name = 'emoji', priority = 400 },
-          { name = 'rpncalc', priority = 800 },
+          { name = 'nerdfont',      priority = 400 },
+          { name = 'emoji',         priority = 400 },
+          { name = 'rpncalc',       priority = 800 },
           {
             name = 'spell',
             option = {
@@ -511,7 +511,7 @@ local config = {
     dependencies = {
       'williamboman/mason.nvim',
       { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp' },
-     'neovim/nvim-lspconfig',
+      'neovim/nvim-lspconfig',
     },
     event = { 'BufReadPost', 'BufNewFile', 'VeryLazy' },
     config = function()
@@ -524,15 +524,15 @@ local config = {
 
       -- default handler to process lsp servers
       local default_config = function(server)
-          local config = {}
-          if type(server) == 'table' then
-            config = server
-            server = server[1]
-          end
-          if config.capabilities == nil then
-            config.capabilities = capabilities
-          end
-          return {name = server, config = config}
+        local config = {}
+        if type(server) == 'table' then
+          config = server
+          server = server[1]
+        end
+        if config.capabilities == nil then
+          config.capabilities = capabilities
+        end
+        return { name = server, config = config }
       end
 
       local lsp_configs = {}
@@ -618,7 +618,6 @@ local config = {
           map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
-
     end,
   },
   {
