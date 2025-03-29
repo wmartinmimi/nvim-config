@@ -499,6 +499,7 @@ local config = {
     'williamboman/mason.nvim',
     lazy = true,
     opts = {},
+    build = ':MasonUpdate',
   },
   {
     'williamboman/mason-lspconfig.nvim',
