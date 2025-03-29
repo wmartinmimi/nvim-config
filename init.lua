@@ -36,9 +36,6 @@ local servers = {
   },
 }
 
--- workarounds --
-g.zig_fmt_autosave = false -- required until nvim v0.11.0
-
 -- options --
 opt.encoding = 'utf8'
 opt.fileformat = 'unix'
@@ -517,7 +514,6 @@ local config = {
 
       -- setup capabilities
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- default handler to process lsp servers
       local default_config = function(server)
