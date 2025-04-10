@@ -106,6 +106,10 @@ local config = {
           enable = true,
         }
       })
+
+      opt.foldmethod = 'expr'
+      opt.foldexpr = 'nvim_treesitter#foldexpr()'
+      opt.foldlevel = 99 -- disable auto folding
     end,
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
   },
