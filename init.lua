@@ -320,7 +320,7 @@ local config = {
       'https://codeberg.org/FelipeLema/cmp-async-path',
       'f3fora/cmp-spell',
       'brenoprata10/nvim-highlight-colors',
-      'Exafunction/codeium.nvim',
+      'Exafunction/windsurf.nvim',
     },
     event = {
       'InsertEnter',
@@ -608,7 +608,7 @@ local config = {
     end,
   },
   {
-    'Exafunction/codeium.nvim',
+    'Exafunction/windsurf.nvim',
     event = 'InsertEnter',
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -616,7 +616,9 @@ local config = {
     },
     cmd = 'Codeium',
     enabled = ai_cmp,
-    opts = {},
+    config = function()
+      require('codeium').setup()
+    end,
   },
   {
     'mfussenegger/nvim-dap',
