@@ -555,13 +555,12 @@ local config = {
       map('n', '[d', vim.diagnostic.goto_prev)
       map('n', ']d', vim.diagnostic.goto_next)
 
-      local visible = true
-      map('n', 'll', function()
-        visible = not visible
+      local function virtual_line_enable(visible)
+        local vl_config
         if visible then
-          print('errors enabled: true')
+          vl_config = { current_line = true }
         else
-          print('errors enabled: false')
+          vl_config = false
         end
         vim.diagnostic.config({
           signs = {
@@ -570,20 +569,17 @@ local config = {
               [vim.diagnostic.severity.WARN] = '',
             },
           },
-          virtual_text = visible,
-          underline = visible,
+          virtual_lines = vl_config,
+          underline = true,
         })
-      end)
-      vim.diagnostic.config({
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '',
-            [vim.diagnostic.severity.WARN] = '',
-          },
-        },
-        virtual_text = visible,
-        underline = visible,
-      })
+      end
+
+      local visible = true
+      virtual_line_enable(visible)
+      vim.api.nvim_create_user_command('ToggleVirtualLine', function()
+        visible = not visible
+        virtual_line_enable(visible)
+      end, {})
 
       map({ 'n', 'x' }, 'cf', function()
         print('no lsp, please format with gg=G')
