@@ -552,8 +552,6 @@ local config = {
       -- note: diagnostics are not exclusive to lsp servers
       -- so these can be global keybindings
       map('n', 'gl', vim.diagnostic.open_float)
-      map('n', '[d', vim.diagnostic.goto_prev)
-      map('n', ']d', vim.diagnostic.goto_next)
 
       local function virtual_line_enable(visible)
         local vl_config
@@ -593,19 +591,14 @@ local config = {
           -- these will be buffer-local keybindings
           -- because they only work if you have an active language server
 
-          map('n', 'K', vim.lsp.buf.hover, opts)
           map('n', 'gd', vim.lsp.buf.definition, opts)
           map('n', 'gD', vim.lsp.buf.declaration, opts)
-          map('n', 'gi', vim.lsp.buf.implementation, opts)
           map('n', 'go', vim.lsp.buf.type_definition, opts)
-          map('n', 'gr', vim.lsp.buf.references, opts)
           map('n', 'gs', vim.lsp.buf.signature_help, opts)
-          map('n', 'cr', vim.lsp.buf.rename, opts)
           map({ 'n', 'x' }, 'cf', function()
             print('formatted')
             vim.lsp.buf.format({ async = true })
           end, opts)
-          map('n', 'ca', vim.lsp.buf.code_action, opts)
         end
       })
     end,
