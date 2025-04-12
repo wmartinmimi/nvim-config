@@ -288,7 +288,7 @@ local config = {
     'delphinus/auto-cursorline.nvim',
     event = 'VeryLazy',
     opts = {
-      wait_ms = 200,
+      wait_ms = 100,
     },
   },
   {
