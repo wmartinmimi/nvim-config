@@ -632,7 +632,7 @@ local config = {
       -- mason integration
       require('mason-nvim-dap').setup {
         handlers = {
-          function (config) -- default configuration
+          function(config) -- default configuration
             require('mason-nvim-dap').default_setup(config)
           end
         }
@@ -655,7 +655,7 @@ local config = {
     end,
     lazy = true,
   },
- {
+  {
     'rcarriga/nvim-dap-ui',
     dependencies = {
       'nvim-neotest/nvim-nio',
