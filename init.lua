@@ -292,6 +292,16 @@ local config = {
     },
   },
   {
+    'tzachar/local-highlight.nvim',
+    opts = {
+      hlgroup = "@text.underline",
+      cw_hlgroup = "@text.underline",
+      insert_mode = true,
+      debounce_timeout = 100,
+      animate = false,
+    },
+  },
+  {
     'numToStr/Comment.nvim',
     opts = {},
     event = 'VeryLazy'
