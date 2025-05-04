@@ -528,15 +528,6 @@ local config = {
     },
   },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    ft = 'markdown',
-    opts = {}
-  },
-  {
     'stevearc/quicker.nvim',
     event = "FileType qf",
     opts = {},
