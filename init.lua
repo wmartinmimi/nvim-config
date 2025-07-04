@@ -384,7 +384,6 @@ local config = {
       'onsails/lspkind.nvim',
       'kdheepak/cmp-latex-symbols',
       'hrsh7th/cmp-emoji',
-      'PhilRunninger/cmp-rpncalc',
       'chrisgrieser/cmp-nerdfont',
       'https://codeberg.org/FelipeLema/cmp-async-path',
       'f3fora/cmp-spell',
@@ -496,7 +495,6 @@ local config = {
           { name = 'latex_symbols', priority = 400 },
           { name = 'nerdfont',      priority = 400 },
           { name = 'emoji',         priority = 400 },
-          { name = 'rpncalc',       priority = 800 },
           {
             name = 'spell',
             option = {
