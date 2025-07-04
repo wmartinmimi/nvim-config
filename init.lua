@@ -250,7 +250,7 @@ local config = {
       'catppuccin'
     },
     commit = '3a74402',
-    event = 'UIEnter'
+    event = 'UIEnter',
   },
   {
     'nvim-telescope/telescope.nvim',
