@@ -80,6 +80,7 @@ local config = {
   'folke/lazy.nvim',
   {
     'Pocco81/auto-save.nvim',
+    commit = '979b6c8',
     opts = {},
     event = 'VeryLazy',
   },
@@ -195,11 +196,13 @@ local config = {
   },
   {
     'nmac427/guess-indent.nvim',
+    commit = '84a4987',
     opts = {},
     event = { 'BufReadPost', 'BufNewFile' },
   },
   {
     "folke/flash.nvim",
+    commit = '3c94266',
     opts = {},
     keys = {
       {
@@ -236,6 +239,7 @@ local config = {
   },
   {
     'mg979/vim-visual-multi',
+    commit = 'a6975e7',
     branch = 'master',
     event = 'VeryLazy',
   },
@@ -245,6 +249,7 @@ local config = {
       'nvim-web-devicons',
       'catppuccin'
     },
+    commit = '3a74402',
     event = 'UIEnter'
   },
   {
@@ -274,6 +279,7 @@ local config = {
   },
   {
     'kevinhwang91/nvim-fundo',
+    commit = 'ac9c937',
     run = function()
       require('fundo').install()
     end,
@@ -283,6 +289,7 @@ local config = {
   },
   {
     'mbbill/undotree',
+    commit = '15d91b0',
     keys = {
       {
         'tu',
@@ -298,6 +305,7 @@ local config = {
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
+    commit = 'b0b4955',
     opts = {
       hijack_unnamed_buffer_when_opening = true,
     },
@@ -315,12 +323,14 @@ local config = {
     dependencies = {
       'nmac427/guess-indent.nvim',
     },
+    commit = '005b560',
     main = 'ibl',
     event = 'VeryLazy',
     opts = {}
   },
   {
     'HiPhish/rainbow-delimiters.nvim',
+    commit = '55ad4fb',
     event = { 'BufReadPost', 'BufNewFile' },
   },
   {
@@ -329,6 +339,7 @@ local config = {
       'nvim-tree/nvim-web-devicons',
       'catppuccin'
     },
+    commit = 'a94fc68',
     event = 'VeryLazy',
     opts = {},
   },
@@ -345,6 +356,7 @@ local config = {
   },
   {
     'delphinus/auto-cursorline.nvim',
+    commit = 'ad7e0d4',
     event = 'VeryLazy',
     opts = {
       wait_ms = 100,
@@ -352,6 +364,7 @@ local config = {
   },
   {
     'tzachar/local-highlight.nvim',
+    commit = '272f36f',
     opts = {
       hlgroup = "@text.underline",
       cw_hlgroup = "@text.underline",
@@ -367,6 +380,7 @@ local config = {
   },
   {
     'brenoprata10/nvim-highlight-colors',
+    commit = 'b42a5cc',
     opts = {
       render = 'virtual',
     },
@@ -520,6 +534,7 @@ local config = {
     dependencies = {
       'nvim-tree/nvim-web-devicons'
     },
+    commit = '85bedb7',
     opts = {},
     keys = {
       { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
@@ -527,6 +542,7 @@ local config = {
   },
   {
     'stevearc/quicker.nvim',
+    commit = '51d3926',
     event = "FileType qf",
     opts = {},
   },
@@ -546,6 +562,7 @@ local config = {
   },
   {
     'chomosuke/typst-preview.nvim',
+    commit = 'dea4525',
     cmd = {
       'TypstPreview',
       'TypstPreviewToggle',
@@ -718,6 +735,7 @@ local config = {
     dependencies = {
       'nvim-neotest/nvim-nio',
     },
+    commit = '73a26ab',
     opts = {},
     lazy = true,
   },
@@ -726,6 +744,7 @@ local config = {
     dependencies = {
       'mfussenegger/nvim-dap',
     },
+    commit = 'fbdb48c',
     opts = {},
     cmd = {
       'DapContinue',
