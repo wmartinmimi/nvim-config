@@ -203,7 +203,15 @@ local config = {
   {
     "folke/flash.nvim",
     commit = '3c94266',
-    opts = {},
+    opts = {
+      modes = {
+        treesitter = {
+          highlight = {
+            backdrop = true,
+          },
+        },
+      },
+    },
     keys = {
       {
         "s",
