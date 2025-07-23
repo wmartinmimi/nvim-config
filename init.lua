@@ -625,7 +625,7 @@ local config = {
 
       -- setup servers
       for server, config in pairs(lsp_configs) do
-        require('lspconfig')[server].setup(config)
+        vim.lsp.enable(server, config)
       end
 
       -- note: diagnostics are not exclusive to lsp servers
