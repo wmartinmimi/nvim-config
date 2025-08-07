@@ -666,6 +666,19 @@ local config = {
         virtual_line_enable(visible)
       end, {})
 
+      vim.api.nvim_create_autocmd("InsertEnter", {
+        pattern = "*",
+        callback = function()
+          virtual_line_enable(false)
+        end
+      })
+      vim.api.nvim_create_autocmd("InsertLeave", {
+        pattern = "*",
+        callback = function()
+          virtual_line_enable(visible)
+        end
+      })
+
       map({ 'n', 'x' }, 'cf', function()
         print('no lsp, please format with gg=G')
       end, {})
