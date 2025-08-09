@@ -46,6 +46,10 @@ opt.expandtab = true
 opt.lazyredraw = true
 opt.linebreak = true
 opt.scrolloff = 999
+-- dangerous, local project execution
+opt.exrc = true
+opt.secure = true
+
 
 if isTermux then
   opt.tabstop = 2
