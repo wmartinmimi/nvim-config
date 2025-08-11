@@ -502,16 +502,13 @@ local config = {
               fallback()
             end
           end, { 'i', 's', 'c' }),
-          ['<M-Left>'] = cmp_map(cmp_map.abort(), { 'i', 's', 'c' }),
-          ['<M-Right>'] = cmp_map(function(fallback)
-            -- enter selected completion
-            if cmp.visible() then
-              cmp.confirm({ select = true })
-            end
-            fallback()
-          end, { 'i', 's', 'c' }),
-          ['<C-j>'] = cmp_map(cmp_map.scroll_docs(1), { 'i', 's', 'c' }),
-          ['<C-k>'] = cmp_map(cmp_map.scroll_docs(-1), { 'i', 's', 'c' }),
+          ['<M-Left>'] = cmp_map.abort(),
+          ['<M-Right>'] = cmp_map.confirm({
+            behavior = cmp.ConfirmBehavior.Insert,
+            select = true,
+          }),
+          ['<C-j>'] = cmp_map.scroll_docs(1),
+          ['<C-k>'] = cmp_map.scroll_docs(-1),
         },
         sources = {
           { name = 'codeium',       priority = 1100 },
