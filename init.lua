@@ -271,7 +271,12 @@ local config = {
       'folke/trouble.nvim',
     },
     keys = {
-      { 'tt', '<CMD>Telescope<CR>', desc = 'opens telescope' }
+      { 'tt', '<CMD>Telescope<CR>', desc = 'opens telescope' },
+      {
+        '<leader>lf',
+        function() require('telescope.builtin').lsp_document_symbols({ symbols='function' }) end,
+        desc = 'list functions in file'
+      },
     },
     cmd = 'Telescope',
     config = function()
