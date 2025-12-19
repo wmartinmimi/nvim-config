@@ -544,11 +544,6 @@ local config = {
       signcolumn = true,
       attach_to_untracked = true,
       current_line_blame = false,
-      current_line_blame_opts = {
-        virt_text_pos = 'right_align',
-        virt_text_priority = 1000,
-        delay = 50,
-      },
     },
   },
   {
