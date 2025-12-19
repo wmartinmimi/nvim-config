@@ -639,7 +639,7 @@ local config = {
 
       local visible = true
       virtual_line_enable(visible)
-      vim.api.nvim_create_user_command('ToggleVirtualLine', function()
+      vim.api.nvim_create_user_command('LspVirtualLineToggle', function()
         visible = not visible
         virtual_line_enable(visible)
       end, {})
