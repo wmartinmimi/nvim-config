@@ -452,7 +452,7 @@ local config = {
           disallow_fuzzying_matching = false,
           disallow_partial_fuzzying_matching = false,
           disallow_partial_matching = false,
-          disallow_prefix_unmatching = false
+          disallow_prefix_unmatching = false,
         },
         sorting = {
           priority_weight = 2.0,
@@ -460,7 +460,7 @@ local config = {
             compare.locality,
             compare.recently_used,
             compare.score,
-            compare.offset
+            compare.offset,
           }
         },
         mapping = {
@@ -506,7 +506,7 @@ local config = {
               keep_all_entries = true,
               enable_in_context = function()
                 return require('cmp.config.context').in_treesitter_capture('spell')
-              end
+              end,
             },
             priority = 400,
           },
