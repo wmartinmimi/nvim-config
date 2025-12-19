@@ -19,18 +19,6 @@ local servers = {
       formatterMode = 'typstyle',
     },
   },
-  -- python autocomplete as ruff does not do that
-  {
-    'pylsp',
-    settings = {
-      pylsp = {
-        plugins = {
-          -- linting provided by ruff
-          ruff = { enabled = true },
-        }
-      }
-    }
-  },
 }
 
 -- options --
