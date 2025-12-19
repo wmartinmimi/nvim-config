@@ -508,7 +508,7 @@ local config = {
                 return require('cmp.config.context').in_treesitter_capture('spell')
               end
             },
-            priority = 200,
+            priority = 400,
           },
         }
       })
