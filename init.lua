@@ -12,8 +12,7 @@ local map = vim.keymap.set
 
 -- LSP --
 local servers = {
-  {
-    'tinymist', -- mem leak
+  tinymist = {
     settings = {
       completion = {
         triggerOnSnippetPlaceholders = true,
@@ -567,78 +566,46 @@ local config = {
     build = ':MasonUpdate',
   },
   {
-    'williamboman/mason-lspconfig.nvim',
+    'mason-org/mason-lspconfig.nvim',
     dependencies = {
-      'williamboman/mason.nvim',
+      { 'mason-org/mason.nvim', opts = {} },
       { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp' },
       'neovim/nvim-lspconfig',
     },
+    opts = {},
     event = { 'BufReadPost', 'BufNewFile', 'VeryLazy' },
     config = function()
-      -- setting up dependencies
-      require('mason-lspconfig').setup()
+      -- default capabilities required by nvim cmp
+      vim.lsp.config('*', { capabilities = require('cmp_nvim_lsp').default_capabilities() })
 
-      -- setup capabilities
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      -- enable all mason installed servers
+      vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
 
-      -- default handler to process lsp servers
-      local default_config = function(server)
-        local config = {}
-        if type(server) == 'table' then
-          config = server
-          server = server[1]
-        end
-        if config.capabilities == nil then
-          config.capabilities = capabilities
-        end
-        return { name = server, config = config }
-      end
-
-      local lsp_configs = {}
-
-      -- process servers installed from mason
-      local mason_servers = require('mason-lspconfig').get_installed_servers()
-      for _, server in pairs(mason_servers) do
-        local config = default_config(server)
-        lsp_configs[config.name] = config.config
-      end
-
-      -- process user server configurations
-      for _, server in pairs(servers) do
-        local config = default_config(server)
-        lsp_configs[config.name] = config.config
-      end
-
-      -- setup servers
-      for server, config in pairs(lsp_configs) do
+      for server, config in pairs(servers) do
         vim.lsp.enable(server, config)
       end
 
-      -- note: diagnostics are not exclusive to lsp servers
-      -- so these can be global keybindings
+      -- diagnostics are global
       map('n', 'gl', vim.diagnostic.open_float)
 
+      local diagnostics = {
+        signs = false,
+        underline = true,
+        update_in_insert = true,
+      }
+
       local function virtual_line_enable(visible)
-        local vl_config
         if visible then
-          vl_config = { current_line = true }
+          diagnostics.virtual_lines = { current_line = true }
         else
-          vl_config = false
+          diagnostics.virtual_lines = false
         end
-        vim.diagnostic.config({
-          signs = {
-            text = {
-              [vim.diagnostic.severity.ERROR] = '',
-              [vim.diagnostic.severity.WARN] = '',
-            },
-          },
-          virtual_lines = vl_config,
-          underline = true,
-        })
+        vim.diagnostic.config(diagnostics)
       end
 
+      virtual_line_enable(true)
+
       local visible = true
-      virtual_line_enable(visible)
       vim.api.nvim_create_user_command('LspVirtualLineToggle', function()
         visible = not visible
         virtual_line_enable(visible)
@@ -650,6 +617,7 @@ local config = {
           virtual_line_enable(false)
         end
       })
+
       vim.api.nvim_create_autocmd("InsertLeave", {
         pattern = "*",
         callback = function()
@@ -666,19 +634,19 @@ local config = {
         callback = function(event)
           local opts = { buffer = event.buf }
 
-          -- these will be buffer-local keybindings
           -- because they only work if you have an active language server
-
           map('n', 'gd', vim.lsp.buf.definition, opts)
           map('n', 'gD', vim.lsp.buf.declaration, opts)
           map('n', 'go', vim.lsp.buf.type_definition, opts)
           map('n', 'gs', vim.lsp.buf.signature_help, opts)
+
           map({ 'n', 'x' }, 'cf', function()
             print('formatted')
             vim.lsp.buf.format({ async = true })
           end, opts)
         end
       })
+
     end,
   },
   {
