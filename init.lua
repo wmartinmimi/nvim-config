@@ -15,8 +15,12 @@ local servers = {
   {
     'tinymist', -- mem leak
     settings = {
-      exportPdf = 'onSave',
-      formatterMode = 'typstyle',
+      completion = {
+        triggerOnSnippetPlaceholders = true,
+      },
+      lint = {
+        enabled = true,
+      },
     },
   },
 }
