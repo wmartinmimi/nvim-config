@@ -392,7 +392,6 @@ local config = {
     'iguanacucumber/magazine.nvim',
     name = 'nvim-cmp',
     dependencies = {
-      'dcampos/nvim-snippy',
       'cmp-nvim-lsp',
       { 'iguanacucumber/mag-buffer',  name = 'cmp-buffer' },
       'https://codeberg.org/FelipeLema/cmp-async-path',
@@ -445,11 +444,6 @@ local config = {
             return item
           end,
         },
-        snippet = {
-          expand = function(args)
-            require('snippy').expand_snippet(args.body)
-          end
-        },
         matching = {
           disallow_fuzzying_matching = false,
           disallow_partial_fuzzying_matching = false,
@@ -498,7 +492,6 @@ local config = {
         },
         sources = {
           { name = 'nvim_lsp',      priority = 1000 },
-          { name = 'snippy',        priority = 1000 },
           { name = 'async_path',    priority = 600 },
           { name = 'latex_symbols', priority = 400 },
           { name = 'nerdfont',      priority = 400 },
