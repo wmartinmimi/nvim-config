@@ -4,9 +4,6 @@ local isTermux = string.find(
   'termux'
 )
 
--- set ai autocomplete
-local ai_cmp = not isTermux
-
 -- alias --
 local vim = vim
 local opt = vim.opt
@@ -419,7 +416,6 @@ local config = {
       'https://codeberg.org/FelipeLema/cmp-async-path',
       'f3fora/cmp-spell',
       'brenoprata10/nvim-highlight-colors',
-      'Exafunction/windsurf.nvim',
     },
     event = {
       'InsertEnter',
@@ -450,9 +446,6 @@ local config = {
           format = function(entry, item)
             local lspkind_item = require('lspkind').cmp_format({
               ellipsis_char = '..',
-              symbol_map = {
-                Codeium = '',
-              }
             })(entry, item)
             local color_item = require('nvim-highlight-colors').format(entry, { kind = item.kind })
             item = lspkind_item
@@ -516,7 +509,6 @@ local config = {
           ['<C-k>'] = cmp_map.scroll_docs(-1),
         },
         sources = {
-          { name = 'codeium',       priority = 1100 },
           { name = 'nvim_lsp',      priority = 1000 },
           { name = 'snippy',        priority = 1000 },
           { name = 'async_path',    priority = 600 },
@@ -707,19 +699,6 @@ local config = {
           end, opts)
         end
       })
-    end,
-  },
-  {
-    'Exafunction/windsurf.nvim',
-    event = 'InsertEnter',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-cmp',
-    },
-    cmd = 'Codeium',
-    enabled = ai_cmp,
-    config = function()
-      require('codeium').setup()
     end,
   },
   {
