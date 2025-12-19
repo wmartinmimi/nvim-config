@@ -384,11 +384,6 @@ local config = {
     },
   },
   {
-    'numToStr/Comment.nvim',
-    opts = {},
-    event = 'VeryLazy'
-  },
-  {
     'brenoprata10/nvim-highlight-colors',
     commit = 'b42a5cc',
     opts = {
@@ -563,12 +558,6 @@ local config = {
         ['websocat'] = 'websocat',
       }
     },
-  },
-  {
-    'williamboman/mason.nvim',
-    lazy = true,
-    opts = {},
-    build = ':MasonUpdate',
   },
   {
     'mason-org/mason-lspconfig.nvim',
