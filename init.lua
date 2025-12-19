@@ -331,7 +331,12 @@ local config = {
     commit = '005b560',
     main = 'ibl',
     event = 'VeryLazy',
-    opts = {}
+    opts = {
+      scope = {
+        show_start = false,
+        show_end = false,
+      }
+    }
   },
   {
     'HiPhish/rainbow-delimiters.nvim',
