@@ -567,7 +567,7 @@ local config = {
       'neovim/nvim-lspconfig',
     },
     opts = {},
-    event = { 'BufReadPost', 'BufNewFile', 'VeryLazy' },
+    event = { 'VeryLazy' },
     config = function()
       -- default capabilities required by nvim cmp
       vim.lsp.config('*', { capabilities = require('cmp_nvim_lsp').default_capabilities() })
