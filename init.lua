@@ -12,6 +12,9 @@ local map = vim.keymap.set
 
 -- LSP --
 local servers = {
+  clangd = {
+    cmd = { 'clangd', '--ranking-model=decision_forest' },
+  },
   tinymist = {
     settings = {
       completion = {
@@ -572,12 +575,14 @@ local config = {
       -- default capabilities required by nvim cmp
       vim.lsp.config('*', { capabilities = require('cmp_nvim_lsp').default_capabilities() })
 
-      -- enable all mason installed servers
-      vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
-
+      -- apply user configuration
       for server, config in pairs(servers) do
-        vim.lsp.enable(server, config)
+        vim.lsp.config(server, config)
       end
+
+      -- enable all known servers
+      vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
+      vim.lsp.enable(vim.tbl_keys(servers))
 
       -- diagnostics are global
       map('n', 'gl', vim.diagnostic.open_float)
