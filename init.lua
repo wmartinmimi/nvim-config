@@ -247,6 +247,12 @@ local config = {
     event = 'VeryLazy',
   },
   {
+    'sphamba/smear-cursor.nvim',
+    commit = 'c85bdbb',
+    event = 'VeryLazy',
+    opts = {},
+  },
+  {
     'romgrk/barbar.nvim',
     dependencies = {
       'nvim-web-devicons',
@@ -393,6 +399,18 @@ local config = {
       render = 'virtual',
     },
     event = 'VeryLazy',
+  },
+  {
+    'hedyhli/outline.nvim',
+    commit = '1967ef5',
+    cmd = { 'Outline', 'OutlineOpen' },
+    opts = {},
+  },
+  {
+    'nacro90/numb.nvim',
+    commit = '8164fd3',
+    event = { 'VeryLazy' },
+    opts = {},
   },
   {
     'iguanacucumber/magazine.nvim',
