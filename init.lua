@@ -413,132 +413,78 @@ local config = {
     opts = {},
   },
   {
-    'iguanacucumber/magazine.nvim',
-    name = 'nvim-cmp',
+    'saghen/blink.cmp',
     dependencies = {
-      'cmp-nvim-lsp',
-      { 'iguanacucumber/mag-buffer',  name = 'cmp-buffer' },
-      'https://codeberg.org/FelipeLema/cmp-async-path',
-      { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
-      'onsails/lspkind.nvim',
-      'kdheepak/cmp-latex-symbols',
-      'hrsh7th/cmp-emoji',
-      'chrisgrieser/cmp-nerdfont',
-      'https://codeberg.org/FelipeLema/cmp-async-path',
-      'f3fora/cmp-spell',
-      'brenoprata10/nvim-highlight-colors',
+      { 'moyiz/blink-emoji.nvim', commit = '066013e' },
+      { 'MahanRahmati/blink-nerdfont.nvim', commit = 'e503445', },
+      { 'erooke/blink-cmp-latex', commit = '3a95836' },
+      { 'ribru17/blink-cmp-spell', commit = '2bd0e0d' },
+    },
+    version = '1.*',
+    init = function()
+      vim.opt.spell = true
+      vim.opt.spelllang = { 'en_gb', 'en_us' }
+    end,
+    opts = {
+      completion = {
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
+        ghost_text = { enabled = true },
+        menu = {
+          -- TODO: menu item direction, not implemented yet
+          direction_priority = { 'n', 's' },
+          draw = {
+            columns = {
+              { 'label', 'label_description' },
+              { 'kind_icon', 'source_name', gap = 1 },
+            },
+          },
+        },
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'emoji', 'nerdfont', 'latex', 'spell' },
+        providers = {
+          emoji = {
+            name = 'Emoji',
+            module = 'blink-emoji',
+            score_offset = -200,
+            opts = { trigger = ':' },
+          },
+          nerdfont = {
+            name = 'Nerd',
+            module = 'blink-nerdfont',
+            score_offset = -200,
+            opts = { trigger = ':' },
+          },
+          latex = {
+            name = 'Latex',
+            module = 'blink-cmp-latex',
+            score_offset = -200,
+            opts = { insert_command = true },
+          },
+          spell = {
+            name = 'Spell',
+            module = 'blink-cmp-spell',
+            score_offset = -400,
+            enabled = function()
+              return vim.opt.spell:get()
+            end,
+            opts = { use_cmp_spell_sorting = true, keep_all_entries = true, max_entries = 10 },
+          },
+          buffer = {
+            score_offset = -600,
+          }
+        },
+      },
+      keymap = {
+        preset = 'default',
+        ['M-Left'] = { 'cancel' },
+        ['<M-Right>'] = { 'accept' },
+      },
     },
     event = {
       'InsertEnter',
       'CmdlineEnter'
     },
-    config = function()
-      -- required by spell
-      vim.opt.spell = true
-      vim.opt.spelllang = { 'en_gb', 'en_us' }
-
-
-      local cmp = require('cmp')
-      local cmp_map = cmp.mapping
-      local compare = require('cmp.config.compare')
-
-      cmp.setup({
-        experimental = {
-          ghost_text = true,
-        },
-        view = {
-          entries = {
-            name = 'custom',
-            vertical_positioning = 'above',
-            selection_order = 'bottom_up',
-          }
-        },
-        formatting = {
-          format = function(entry, item)
-            local lspkind_item = require('lspkind').cmp_format({
-              ellipsis_char = '..',
-            })(entry, item)
-            local color_item = require('nvim-highlight-colors').format(entry, { kind = item.kind })
-            item = lspkind_item
-            -- nvim-highlight-colors integration
-            if color_item.abbr_hl_group then
-              item.kind_hl_group = color_item.abbr_hl_group
-              item.kind = color_item.abbr
-            end
-            return item
-          end,
-        },
-        matching = {
-          disallow_fuzzying_matching = false,
-          disallow_partial_fuzzying_matching = false,
-          disallow_partial_matching = false,
-          disallow_prefix_unmatching = false,
-        },
-        sorting = {
-          priority_weight = 2.0,
-          comparators = {
-            compare.locality,
-            compare.recently_used,
-            compare.score,
-            compare.offset,
-          }
-        },
-        mapping = {
-          ['<Down>'] = cmp_map(function(fallback)
-            if cmp.visible() then
-              if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                cmp.select_next_item()
-              else
-                cmp.select_prev_item()
-              end
-            else
-              fallback()
-            end
-          end, { 'i', 's', 'c' }),
-          ['<Up>'] = cmp_map(function(fallback)
-            if cmp.visible() then
-              if cmp.core.view.custom_entries_view:is_direction_top_down() then
-                cmp.select_prev_item()
-              else
-                cmp.select_next_item()
-              end
-            else
-              fallback()
-            end
-          end, { 'i', 's', 'c' }),
-          ['<M-Left>'] = cmp_map.abort(),
-          ['<M-Right>'] = cmp_map.confirm({
-            behavior = cmp.ConfirmBehavior.Insert,
-            select = true,
-          }),
-          ['<C-j>'] = cmp_map.scroll_docs(1),
-          ['<C-k>'] = cmp_map.scroll_docs(-1),
-        },
-        sources = {
-          { name = 'nvim_lsp',      priority = 1000 },
-          { name = 'async_path',    priority = 600 },
-          { name = 'latex_symbols', priority = 400 },
-          { name = 'nerdfont',      priority = 400 },
-          { name = 'emoji',         priority = 400 },
-          {
-            name = 'spell',
-            option = {
-              keep_all_entries = true,
-              enable_in_context = function()
-                return require('cmp.config.context').in_treesitter_capture('spell')
-              end,
-            },
-            priority = 400,
-          },
-        }
-      })
-      cmp.setup.cmdline({ '/', '?' }, {
-        mapping = cmp_map.preset.cmdline(),
-        sources = {
-          { name = 'buffer' }
-        }
-      })
-    end
   },
   {
     'folke/trouble.nvim',
@@ -584,14 +530,11 @@ local config = {
     'mason-org/mason-lspconfig.nvim',
     dependencies = {
       { 'mason-org/mason.nvim', opts = {} },
-      { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp' },
       'neovim/nvim-lspconfig',
     },
     opts = {},
     event = { 'VeryLazy' },
     config = function()
-      -- default capabilities required by nvim cmp
-      vim.lsp.config('*', { capabilities = require('cmp_nvim_lsp').default_capabilities() })
 
       -- apply user configuration
       for server, config in pairs(servers) do
