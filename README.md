@@ -26,7 +26,6 @@ Everything may change at anytime.
 - autosave
 - telescope.nvim
 - quick word jumping with flash.nvim
-- ai autocompletion via codeium (non-termux)
 - debugging support with nvim dap
 
 ## Adding Lsps
@@ -52,10 +51,6 @@ Run `:help lspconfig-all` to list all possible lsp integrations with some instru
 - `tt`: opens Telescope.nvim
 - `ff`: opens nvim-tree
 - `cf`: formats code
-
-### Notice Termux users
-
-codeium binary does not work with termux the last time I checked, hence plugin is disabled by default.
 
 ## Installation
 
