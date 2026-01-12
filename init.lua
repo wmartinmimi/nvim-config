@@ -521,8 +521,8 @@ local config = {
     },
     opts = {
       dependencies_bin = {
-        ['tinymist'] = 'tinymist',
-        ['websocat'] = 'websocat',
+        ['tinymist'] = vim.fn.exepath('tinymist'),
+        ['websocat'] = vim.fn.exepath('websocat'),
       }
     },
   },
