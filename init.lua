@@ -480,7 +480,7 @@ local config = {
         },
       },
       keymap = {
-        preset = 'default',
+        preset = 'super-tab',
         ['M-Left'] = { 'cancel' },
         ['<M-Right>'] = { 'accept' },
       },
