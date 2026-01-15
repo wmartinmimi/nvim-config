@@ -424,6 +424,9 @@ local config = {
     init = function()
       vim.opt.spell = true
       vim.opt.spelllang = { 'en_gb', 'en_us' }
+      -- TODO: better location to place this
+      vim.api.nvim_set_hl(0, 'SnippetTabstop', {})
+      vim.api.nvim_set_hl(0, 'SnippetTabstopActive', {})
     end,
     opts = {
       cmdline = {
