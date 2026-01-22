@@ -446,6 +446,9 @@ local config = {
             },
           },
         },
+        trigger = {
+          show_on_backspace_in_keyword = true,
+        },
       },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer', 'emoji', 'nerdfont', 'latex', 'spell' },
