@@ -275,8 +275,17 @@ local config = {
   {
     'wmartinmimi/todo-highlight.nvim',
     opts = {
+      ts_query = function(ft)
+        if ft == "typst" then
+          return [[
+            ((comment) @comment)
+            ((text) @text)
+          ]]
+        end
+        return [[(comment) @comment]]
+      end,
       contextless = function(ft)
-        return ft == "typst" or ft == "markdown"
+        return ft == "markdown"
       end,
     },
   },
