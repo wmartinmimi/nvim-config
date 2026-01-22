@@ -203,6 +203,11 @@ local config = {
         custom_highlights = function(colors)
           return {
             LineNr = { fg = colors.overlay0 },
+            ["@comment.error"] = { fg = colors.red, bg = "NONE", style = { "bold" } },
+            ["@comment.warning"] = { fg = colors.yellow, bg = "NONE", style = { "bold" } },
+            ["@comment.hint"] = { fg = colors.blue, bg = "NONE", style = { "bold" } },
+            ["@comment.todo"] = { fg = colors.flamingo, bg = "NONE", style = { "bold" } },
+            ["@comment.note"] = { fg = colors.rosewater, bg = "NONE", style = { "bold" } },
           }
         end
       })
@@ -266,6 +271,14 @@ local config = {
     commit = 'a6975e7',
     branch = 'master',
     event = 'VeryLazy',
+  },
+  {
+    'wmartinmimi/todo-highlight.nvim',
+    opts = {
+      contextless = function(ft)
+        return ft == "typst" and ft == "markdown"
+      end,
+    },
   },
   {
     'sphamba/smear-cursor.nvim',
