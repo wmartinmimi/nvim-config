@@ -70,6 +70,27 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local function new_project_file()
+  local nvim_lua = {
+    "local success, dap = pcall(require, 'dap')",
+    "if success then",
+    "  dap.configurations.c = {",
+    "    {",
+    "      name = 'Launch Linux',",
+    "      type = 'codelldb',",
+    "      request = 'launch',",
+    "      program = '${workspaceFolder}/main',",
+    "      stopOnEntry = false,",
+    "    },",
+    "  }",
+    "end",
+  }
+
+  vim.fn.writefile(nvim_lua, ".nvim.lua")
+end
+
+vim.api.nvim_create_user_command("NewNvimLua", new_project_file, {})
+
 -- plugin configs
 local config = {
   'folke/lazy.nvim',
