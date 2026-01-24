@@ -382,8 +382,9 @@ local config = {
     }
   },
   {
-    'HiPhish/rainbow-delimiters.nvim',
-    commit = '55ad4fb',
+    'https://gitlab.com/HiPhish/rainbow-delimiters.nvim',
+    commit = 'd6b802552cbe7d643a3b6b31f419c248d1f1e220',
+    submodules = false,
     event = { 'BufReadPost', 'BufNewFile' },
   },
   {
