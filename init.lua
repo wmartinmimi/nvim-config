@@ -276,7 +276,7 @@ local config = {
     'wmartinmimi/todo-highlight.nvim',
     opts = {
       contextless = function(ft)
-        return ft == "typst" and ft == "markdown"
+        return ft == "typst" or ft == "markdown"
       end,
     },
   },
