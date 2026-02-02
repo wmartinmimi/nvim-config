@@ -102,9 +102,10 @@ local config = {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
     dependencies = {
       'HiPhish/rainbow-delimiters.nvim',
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
     },
     build = ':TSUpdate',
     config = function()
