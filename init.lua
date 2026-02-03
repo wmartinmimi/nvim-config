@@ -58,13 +58,13 @@ vim.loader.enable()
 
 -- bootstrapping
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     'git',
     'clone',
     '--filter=blob:none',
+    '--branch=stable',
     'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
     lazypath,
   })
 end
@@ -102,94 +102,131 @@ local config = {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
-    dependencies = {
-      'HiPhish/rainbow-delimiters.nvim',
-      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
-    },
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        auto_install = true,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false
-        },
-        autopairs = {
-          enable = true
-        },
-        indent = {
-          enable = true
-        },
-        rainbow = {
-          enable = true,
-        },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
-            scope_incremental = false,
-            node_decremental = "<bs>",
-          },
-        },
-        textobjects = {
-          select = {
-            enable = true,
-            keymaps = {
-              ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
-              ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
-              ["ap"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
-              ["ip"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
-              ["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
-              ["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
-              ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
-              ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
-              ["af"] = { query = "@function.outer", desc = "Select outer part of a function definition" },
-              ["if"] = { query = "@function.inner", desc = "Select inner part of a function definition" },
-              ["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
-              ["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true, -- whether to set jumps in the jumplist
-            goto_next_start = {
-              ["]f"] = { query = "@function.outer", desc = "Next function def start" },
-              ["]c"] = { query = "@class.outer", desc = "Next class start" },
-              ["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
-              ["]l"] = { query = "@loop.outer", desc = "Next loop start" },
-              ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-            },
-            goto_next_end = {
-              ["]F"] = { query = "@function.outer", desc = "Next function def end" },
-              ["]C"] = { query = "@class.outer", desc = "Next class end" },
-              ["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
-              ["]L"] = { query = "@loop.outer", desc = "Next loop end" },
-            },
-            goto_previous_start = {
-              ["[f"] = { query = "@function.outer", desc = "Prev function def start" },
-              ["[c"] = { query = "@class.outer", desc = "Prev class start" },
-              ["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
-              ["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
-              ["[z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-            },
-            goto_previous_end = {
-              ["[F"] = { query = "@function.outer", desc = "Prev function def end" },
-              ["[C"] = { query = "@class.outer", desc = "Prev class end" },
-              ["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
-              ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
-            },
-          },
-        },
+    cmd = { 'TSInstall', 'TSInstallFromGrammar', 'TSUpdate', 'TSUninstall', 'TSLog' },
+    init = function()
+      local function load_treesitter()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local ft = vim.bo.filetype
+        local lang = vim.treesitter.language.get_lang(ft)
+        if vim.treesitter.language.add(lang) then
+          vim.treesitter.start(bufnr, lang)
+        else
+          vim.treesitter.stop()
+        end
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = load_treesitter
       })
 
+      vim.api.nvim_create_user_command('TSReload', load_treesitter, {})
+
+      opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
       opt.foldmethod = 'expr'
-      opt.foldexpr = 'nvim_treesitter#foldexpr()'
       opt.foldlevel = 99 -- disable auto folding
+
     end,
-    event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
   },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'main',
+    init = function()
+      -- disable presets to avoid conflict
+      vim.g.no_plugin_maps = true
+    end,
+    opts = {}
+  },
+  -- {
+  --   'nvim-treesitter/nvim-treesitter',
+  --   branch = 'master',
+  --   dependencies = {
+  --     'HiPhish/rainbow-delimiters.nvim',
+  --     { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
+  --   },
+  --   build = ':TSUpdate',
+  --   config = function()
+  --     require('nvim-treesitter.configs').setup({
+  --       auto_install = true,
+  --       highlight = {
+  --         enable = true,
+  --         additional_vim_regex_highlighting = false
+  --       },
+  --       autopairs = {
+  --         enable = true
+  --       },
+  --       indent = {
+  --         enable = true
+  --       },
+  --       rainbow = {
+  --         enable = true,
+  --       },
+  --       incremental_selection = {
+  --         enable = true,
+  --         keymaps = {
+  --           init_selection = "<C-space>",
+  --           node_incremental = "<C-space>",
+  --           scope_incremental = false,
+  --           node_decremental = "<bs>",
+  --         },
+  --       },
+  --       textobjects = {
+  --         select = {
+  --           enable = true,
+  --           keymaps = {
+  --             ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
+  --             ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
+  --             ["ap"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
+  --             ["ip"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
+  --             ["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
+  --             ["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
+  --             ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
+  --             ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
+  --             ["af"] = { query = "@function.outer", desc = "Select outer part of a function definition" },
+  --             ["if"] = { query = "@function.inner", desc = "Select inner part of a function definition" },
+  --             ["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
+  --             ["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
+  --           },
+  --         },
+  --         move = {
+  --           enable = true,
+  --           set_jumps = true, -- whether to set jumps in the jumplist
+  --           goto_next_start = {
+  --             ["]f"] = { query = "@function.outer", desc = "Next function def start" },
+  --             ["]c"] = { query = "@class.outer", desc = "Next class start" },
+  --             ["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
+  --             ["]l"] = { query = "@loop.outer", desc = "Next loop start" },
+  --             ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+  --           },
+  --           goto_next_end = {
+  --             ["]F"] = { query = "@function.outer", desc = "Next function def end" },
+  --             ["]C"] = { query = "@class.outer", desc = "Next class end" },
+  --             ["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
+  --             ["]L"] = { query = "@loop.outer", desc = "Next loop end" },
+  --           },
+  --           goto_previous_start = {
+  --             ["[f"] = { query = "@function.outer", desc = "Prev function def start" },
+  --             ["[c"] = { query = "@class.outer", desc = "Prev class start" },
+  --             ["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
+  --             ["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
+  --             ["[z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+  --           },
+  --           goto_previous_end = {
+  --             ["[F"] = { query = "@function.outer", desc = "Prev function def end" },
+  --             ["[C"] = { query = "@class.outer", desc = "Prev class end" },
+  --             ["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
+  --             ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
+  --           },
+  --         },
+  --       },
+  --     })
+  --
+  --     opt.foldmethod = 'expr'
+  --     opt.foldexpr = 'nvim_treesitter#foldexpr()'
+  --     opt.foldlevel = 99 -- disable auto folding
+  --   end,
+  --   event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
+  -- },
   {
     'catppuccin/nvim',
     name = 'catppuccin',
@@ -276,6 +313,7 @@ local config = {
   {
     'wmartinmimi/todo-highlight.nvim',
     opts = {
+      -- TODO: add lua highlight function
       ts_query = function(ft)
         if ft == "typst" then
           return [[
@@ -395,7 +433,16 @@ local config = {
     'https://gitlab.com/HiPhish/rainbow-delimiters.nvim',
     commit = 'd6b802552cbe7d643a3b6b31f419c248d1f1e220',
     submodules = false,
-    event = { 'BufReadPost', 'BufNewFile' },
+    event = 'VeryLazy',
+    config = function ()
+      require('rainbow-delimiters').enable()
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TSReload',
+        callback = function()
+          require('rainbow-delimiters').enable()
+        end,
+      })
+    end
   },
   {
     'nvim-lualine/lualine.nvim',

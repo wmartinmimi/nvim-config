@@ -75,6 +75,7 @@ git reset --hard HEAD
 ## Requires
 
 - Nerdfont (for pretty text icon)
+- `tree-sitter-cli`, for installing parsers
 
 Download a nerdfont, paste in ~/.termux, and rename to `font.ttf`.
 
