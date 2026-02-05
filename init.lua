@@ -126,102 +126,85 @@ local config = {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     branch = 'main',
+    event = 'VeryLazy',
     init = function()
       -- disable presets to avoid conflict
       vim.g.no_plugin_maps = true
     end,
-    opts = {}
+    config = function()
+      require 'nvim-treesitter-textobjects'.setup {
+        select = { lookahead = true },
+      }
+
+      local function require_ts(module)
+        return require('nvim-treesitter-textobjects.' .. module)
+      end
+
+      local function ts_select_io(key, obj)
+        vim.keymap.set({ 'x', 'o' }, 'a' .. key, function()
+          require_ts 'select'.select_textobject(obj .. '.outer', 'textobjects')
+        end)
+        vim.keymap.set({ 'x', 'o' }, 'i' .. key, function()
+          require_ts 'select'.select_textobject(obj .. '.inner', 'textobjects')
+        end)
+      end
+
+      ts_select_io('f', '@function')
+      ts_select_io('c', '@class')
+      ts_select_io('i', '@conditional')
+      ts_select_io('l', '@loop')
+      ts_select_io('/', '@comment')
+
+      vim.keymap.set({ 'x', 'o' }, 'as', function()
+        require_ts 'select'.select_textobject('@local.scope', 'locals')
+      end)
+      vim.keymap.set({ 'x', 'o' }, 'is', function()
+        require_ts 'select'.select_textobject('@fold', 'folds')
+      end)
+
+      local function ts_goto(key, obj, scm)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key:upper(), function()
+          require_ts 'move'.goto_next_end(obj, scm)
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key, function()
+          require_ts 'move'.goto_next_start(obj, scm)
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key:upper(), function()
+          require_ts 'move'.goto_previous_end(obj, scm)
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key, function()
+          require_ts 'move'.goto_previous_start(obj, scm)
+        end)
+      end
+
+      local function ts_goto_io(key, obj)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key:upper(), function()
+          require_ts 'move'.goto_next_end(obj .. '.inner', 'textobjects')
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, ']' .. key, function()
+          require_ts 'move'.goto_next_start(obj .. '.outer', 'textobjects')
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key:upper(), function()
+          require_ts 'move'.goto_previous_end(obj .. '.inner', 'textobjects')
+        end)
+        vim.keymap.set({ 'n', 'x', 'o' }, '[' .. key, function()
+          require_ts 'move'.goto_previous_start(obj .. '.outer', 'textobjects')
+        end)
+      end
+
+      ts_goto_io('f', '@function')
+      ts_goto_io('c', '@class')
+      ts_goto_io('i', '@conditional')
+      ts_goto_io('l', '@loop')
+      ts_goto_io('/', '@comment')
+
+      ts_goto('s', '@local.scope', 'locals')
+      ts_goto('z', '@fold', 'folds')
+
+      vim.keymap.set({ 'n', 'x', 'o' }, ';', require_ts 'repeatable_move'.repeat_last_move_next)
+      vim.keymap.set({ 'n', 'x', 'o' }, ',', require_ts 'repeatable_move'.repeat_last_move_previous)
+    end,
   },
-  -- {
-  --   'nvim-treesitter/nvim-treesitter',
-  --   branch = 'master',
-  --   dependencies = {
-  --     'HiPhish/rainbow-delimiters.nvim',
-  --     { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'master' },
-  --   },
-  --   build = ':TSUpdate',
-  --   config = function()
-  --     require('nvim-treesitter.configs').setup({
-  --       auto_install = true,
-  --       highlight = {
-  --         enable = true,
-  --         additional_vim_regex_highlighting = false
-  --       },
-  --       autopairs = {
-  --         enable = true
-  --       },
-  --       indent = {
-  --         enable = true
-  --       },
-  --       rainbow = {
-  --         enable = true,
-  --       },
-  --       incremental_selection = {
-  --         enable = true,
-  --         keymaps = {
-  --           init_selection = "<C-space>",
-  --           node_incremental = "<C-space>",
-  --           scope_incremental = false,
-  --           node_decremental = "<bs>",
-  --         },
-  --       },
-  --       textobjects = {
-  --         select = {
-  --           enable = true,
-  --           keymaps = {
-  --             ["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
-  --             ["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
-  --             ["ap"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
-  --             ["ip"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
-  --             ["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
-  --             ["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
-  --             ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
-  --             ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
-  --             ["af"] = { query = "@function.outer", desc = "Select outer part of a function definition" },
-  --             ["if"] = { query = "@function.inner", desc = "Select inner part of a function definition" },
-  --             ["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
-  --             ["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
-  --           },
-  --         },
-  --         move = {
-  --           enable = true,
-  --           set_jumps = true, -- whether to set jumps in the jumplist
-  --           goto_next_start = {
-  --             ["]f"] = { query = "@function.outer", desc = "Next function def start" },
-  --             ["]c"] = { query = "@class.outer", desc = "Next class start" },
-  --             ["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
-  --             ["]l"] = { query = "@loop.outer", desc = "Next loop start" },
-  --             ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-  --           },
-  --           goto_next_end = {
-  --             ["]F"] = { query = "@function.outer", desc = "Next function def end" },
-  --             ["]C"] = { query = "@class.outer", desc = "Next class end" },
-  --             ["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
-  --             ["]L"] = { query = "@loop.outer", desc = "Next loop end" },
-  --           },
-  --           goto_previous_start = {
-  --             ["[f"] = { query = "@function.outer", desc = "Prev function def start" },
-  --             ["[c"] = { query = "@class.outer", desc = "Prev class start" },
-  --             ["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
-  --             ["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
-  --             ["[z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
-  --           },
-  --           goto_previous_end = {
-  --             ["[F"] = { query = "@function.outer", desc = "Prev function def end" },
-  --             ["[C"] = { query = "@class.outer", desc = "Prev class end" },
-  --             ["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
-  --             ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
-  --           },
-  --         },
-  --       },
-  --     })
-  --
-  --     opt.foldmethod = 'expr'
-  --     opt.foldexpr = 'nvim_treesitter#foldexpr()'
-  --     opt.foldlevel = 99 -- disable auto folding
-  --   end,
-  --   event = { 'BufReadPost', 'BufNewFile', 'BufWritePre', 'VeryLazy' },
-  -- },
   {
     'catppuccin/nvim',
     name = 'catppuccin',
