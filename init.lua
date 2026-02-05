@@ -50,9 +50,6 @@ else
   opt.shiftwidth = 4
 end
 
-g.do_filetype_lua = true
-g.did_load_filetypes = false
-
 g.loaded_python3_provider = true
 g.loaded_ruby_provider = true
 g.loaded_perl_provider = true
