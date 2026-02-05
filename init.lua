@@ -105,14 +105,14 @@ local config = {
     build = ':TSUpdate',
     cmd = { 'TSInstall', 'TSInstallFromGrammar', 'TSUpdate', 'TSUninstall', 'TSLog' },
     init = function()
-      local function load_treesitter()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local ft = vim.bo.filetype
-        local lang = vim.treesitter.language.get_lang(ft)
-        if vim.treesitter.language.add(lang) then
-          vim.treesitter.start(bufnr, lang)
-        else
-          vim.treesitter.stop()
+      local function load_treesitter(args)
+        local ok, parser = pcall(vim.treesitter.get_parser, args.buf)
+        if ok then
+          vim.treesitter.start(args.buf)
+          vim.api.nvim_exec_autocmds('User', {
+            pattern = 'TSBufAttach',
+            data = { buf = args.buf, lang = parser:lang() },
+          })
         end
       end
 
@@ -121,11 +121,6 @@ local config = {
       })
 
       vim.api.nvim_create_user_command('TSReload', load_treesitter, {})
-
-      opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-      opt.foldmethod = 'expr'
-      opt.foldlevel = 99 -- disable auto folding
-
     end,
   },
   {
@@ -353,7 +348,7 @@ local config = {
       { 'tt', '<CMD>Telescope<CR>', desc = 'opens telescope' },
       {
         '<leader>lf',
-        function() require('telescope.builtin').lsp_document_symbols({ symbols='function' }) end,
+        function() require('telescope.builtin').lsp_document_symbols({ symbols = 'function' }) end,
         desc = 'list functions in file'
       },
     },
@@ -433,11 +428,11 @@ local config = {
     'https://gitlab.com/HiPhish/rainbow-delimiters.nvim',
     commit = 'd6b802552cbe7d643a3b6b31f419c248d1f1e220',
     submodules = false,
-    event = 'VeryLazy',
-    config = function ()
+    event = 'User TSBufAttach',
+    config = function()
       require('rainbow-delimiters').enable()
       vim.api.nvim_create_autocmd('User', {
-        pattern = 'TSReload',
+        pattern = 'TSBufAttach',
         callback = function()
           require('rainbow-delimiters').enable()
         end,
@@ -507,10 +502,10 @@ local config = {
   {
     'saghen/blink.cmp',
     dependencies = {
-      { 'moyiz/blink-emoji.nvim', commit = '066013e' },
+      { 'moyiz/blink-emoji.nvim',           commit = '066013e' },
       { 'MahanRahmati/blink-nerdfont.nvim', commit = 'e503445', },
-      { 'erooke/blink-cmp-latex', commit = '3a95836' },
-      { 'ribru17/blink-cmp-spell', commit = '2bd0e0d' },
+      { 'erooke/blink-cmp-latex',           commit = '3a95836' },
+      { 'ribru17/blink-cmp-spell',          commit = '2bd0e0d' },
     },
     version = '1.*',
     init = function()
@@ -533,8 +528,8 @@ local config = {
           direction_priority = { 'n', 's' },
           draw = {
             columns = {
-              { 'label', 'label_description' },
-              { 'kind_icon', 'source_name', gap = 1 },
+              { 'label',     'label_description' },
+              { 'kind_icon', 'source_name',      gap = 1 },
             },
           },
         },
@@ -637,7 +632,6 @@ local config = {
     opts = {},
     event = { 'VeryLazy' },
     config = function()
-
       -- apply user configuration
       for server, config in pairs(servers) do
         vim.lsp.config(server, config)
@@ -708,7 +702,6 @@ local config = {
           end, opts)
         end
       })
-
     end,
   },
   {
