@@ -77,24 +77,24 @@ vim.opt.rtp:prepend(lazypath)
 
 local function new_project_file()
   local nvim_lua = {
-    "local success, dap = pcall(require, 'dap')",
-    "if success then",
-    "  dap.configurations.c = {",
-    "    {",
-    "      name = 'Launch Linux',",
-    "      type = 'codelldb',",
-    "      request = 'launch',",
-    "      program = '${workspaceFolder}/main',",
-    "      stopOnEntry = false,",
-    "    },",
-    "  }",
-    "end",
+    'local success, dap = pcall(require, \'dap\')',
+    'if success then',
+    '  dap.configurations.c = {',
+    '    {',
+    '      name = \'Launch Linux\',',
+    '      type = \'codelldb\',',
+    '      request = \'launch\',',
+    '      program = \'${workspaceFolder}/main\',',
+    '      stopOnEntry = false,',
+    '    },',
+    '  }',
+    'end',
   }
 
-  vim.fn.writefile(nvim_lua, ".nvim.lua")
+  vim.fn.writefile(nvim_lua, '.nvim.lua')
 end
 
-vim.api.nvim_create_user_command("NewNvimLua", new_project_file, {})
+vim.api.nvim_create_user_command('NewNvimLua', new_project_file, {})
 
 -- plugin configs
 local config = {
@@ -224,11 +224,11 @@ local config = {
         custom_highlights = function(colors)
           return {
             LineNr = { fg = colors.overlay0 },
-            ["@comment.error"] = { fg = colors.red, bg = "NONE", style = { "bold" } },
-            ["@comment.warning"] = { fg = colors.yellow, bg = "NONE", style = { "bold" } },
-            ["@comment.hint"] = { fg = colors.blue, bg = "NONE", style = { "bold" } },
-            ["@comment.todo"] = { fg = colors.flamingo, bg = "NONE", style = { "bold" } },
-            ["@comment.note"] = { fg = colors.rosewater, bg = "NONE", style = { "bold" } },
+            ['@comment.error'] = { fg = colors.red, bg = 'NONE', style = { 'bold' } },
+            ['@comment.warning'] = { fg = colors.yellow, bg = 'NONE', style = { 'bold' } },
+            ['@comment.hint'] = { fg = colors.blue, bg = 'NONE', style = { 'bold' } },
+            ['@comment.todo'] = { fg = colors.flamingo, bg = 'NONE', style = { 'bold' } },
+            ['@comment.note'] = { fg = colors.rosewater, bg = 'NONE', style = { 'bold' } },
           }
         end
       })
@@ -243,7 +243,7 @@ local config = {
     event = { 'BufReadPost', 'BufNewFile' },
   },
   {
-    "folke/flash.nvim",
+    'folke/flash.nvim',
     commit = '3c94266',
     opts = {
       modes = {
@@ -256,34 +256,34 @@ local config = {
     },
     keys = {
       {
-        "s",
-        mode = { "n", "x", "o" },
-        function() require("flash").jump() end,
-        desc = "Flash"
+        's',
+        mode = { 'n', 'x', 'o' },
+        function() require('flash').jump() end,
+        desc = 'Flash'
       },
       {
-        "S",
-        mode = { "n", "x", "o" },
-        function() require("flash").treesitter() end,
-        desc = "Flash Treesitter"
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function() require('flash').treesitter() end,
+        desc = 'Flash Treesitter'
       },
       {
-        "r",
-        mode = "o",
-        function() require("flash").remote() end,
-        desc = "Remote Flash"
+        'r',
+        mode = 'o',
+        function() require('flash').remote() end,
+        desc = 'Remote Flash'
       },
       {
-        "R",
-        mode = { "o", "x" },
-        function() require("flash").treesitter_search() end,
-        desc = "Treesitter Search"
+        'R',
+        mode = { 'o', 'x' },
+        function() require('flash').treesitter_search() end,
+        desc = 'Treesitter Search'
       },
       {
-        "<c-s>",
-        mode = { "c" },
-        function() require("flash").toggle() end,
-        desc = "Toggle Flash Search"
+        '<c-s>',
+        mode = { 'c' },
+        function() require('flash').toggle() end,
+        desc = 'Toggle Flash Search'
       },
     },
   },
@@ -298,7 +298,7 @@ local config = {
     opts = {
       -- TODO: add lua highlight function
       ts_query = function(ft)
-        if ft == "typst" then
+        if ft == 'typst' then
           return [[
             ((comment) @comment)
             ((text) @text)
@@ -307,7 +307,7 @@ local config = {
         return [[(comment) @comment]]
       end,
       contextless = function(ft)
-        return ft == "markdown"
+        return ft == 'markdown'
       end,
     },
   },
@@ -454,8 +454,8 @@ local config = {
     'tzachar/local-highlight.nvim',
     commit = '272f36f',
     opts = {
-      hlgroup = "@text.underline",
-      cw_hlgroup = "@text.underline",
+      hlgroup = '@text.underline',
+      cw_hlgroup = '@text.underline',
       insert_mode = true,
       debounce_timeout = 100,
       animate = false,
@@ -579,7 +579,7 @@ local config = {
   {
     'stevearc/quicker.nvim',
     commit = '51d3926',
-    event = "FileType qf",
+    event = 'FileType qf',
     opts = {},
   },
   {
@@ -649,15 +649,15 @@ local config = {
         virtual_line_enable(visible)
       end, {})
 
-      vim.api.nvim_create_autocmd("InsertEnter", {
-        pattern = "*",
+      vim.api.nvim_create_autocmd('InsertEnter', {
+        pattern = '*',
         callback = function()
           virtual_line_enable(false)
         end
       })
 
-      vim.api.nvim_create_autocmd("InsertLeave", {
-        pattern = "*",
+      vim.api.nvim_create_autocmd('InsertLeave', {
+        pattern = '*',
         callback = function()
           virtual_line_enable(visible)
         end
@@ -711,7 +711,7 @@ local config = {
     opts = {
       auto_toggle = true,
       winbar = {
-        sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
+        sections = { 'watches', 'scopes', 'exceptions', 'breakpoints', 'threads', 'repl', 'console' },
         controls = { enabled = true },
       }
     },
@@ -726,89 +726,89 @@ local config = {
     opts = {},
     keys = {
       {
-        "<leader>dB",
-        function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
-        desc = "Breakpoint Condition"
+        '<leader>dB',
+        function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
+        desc = 'Breakpoint Condition'
       },
       {
-        "<leader>db",
-        function() require("dap").toggle_breakpoint() end,
-        desc = "Toggle Breakpoint"
+        '<leader>db',
+        function() require('dap').toggle_breakpoint() end,
+        desc = 'Toggle Breakpoint'
       },
       {
-        "<leader>dc",
-        function() require("dap").continue() end,
-        desc = "Run/Continue"
+        '<leader>dc',
+        function() require('dap').continue() end,
+        desc = 'Run/Continue'
       },
       {
-        "<leader>da",
-        function() require("dap").continue() end,
-        desc = "Run with Args"
+        '<leader>da',
+        function() require('dap').continue() end,
+        desc = 'Run with Args'
       },
       {
-        "<leader>dC",
-        function() require("dap").run_to_cursor() end,
-        desc = "Run to Cursor"
+        '<leader>dC',
+        function() require('dap').run_to_cursor() end,
+        desc = 'Run to Cursor'
       },
       {
-        "<leader>dg",
-        function() require("dap").goto_() end,
-        desc = "Go to Line (No Execute)"
+        '<leader>dg',
+        function() require('dap').goto_() end,
+        desc = 'Go to Line (No Execute)'
       },
       {
-        "<leader>di",
-        function() require("dap").step_into() end,
-        desc = "Step Into"
+        '<leader>di',
+        function() require('dap').step_into() end,
+        desc = 'Step Into'
       },
       {
-        "<leader>dj",
-        function() require("dap").down() end,
-        desc = "Down"
+        '<leader>dj',
+        function() require('dap').down() end,
+        desc = 'Down'
       },
       {
-        "<leader>dk",
-        function() require("dap").up() end,
-        desc = "Up"
+        '<leader>dk',
+        function() require('dap').up() end,
+        desc = 'Up'
       },
       {
-        "<leader>dl",
-        function() require("dap").run_last() end,
-        desc = "Run Last"
+        '<leader>dl',
+        function() require('dap').run_last() end,
+        desc = 'Run Last'
       },
       {
-        "<leader>do",
-        function() require("dap").step_out() end,
-        desc = "Step Out"
+        '<leader>do',
+        function() require('dap').step_out() end,
+        desc = 'Step Out'
       },
       {
-        "<leader>dO",
-        function() require("dap").step_over() end,
-        desc = "Step Over"
+        '<leader>dO',
+        function() require('dap').step_over() end,
+        desc = 'Step Over'
       },
       {
-        "<leader>dP",
-        function() require("dap").pause() end,
-        desc = "Pause"
+        '<leader>dP',
+        function() require('dap').pause() end,
+        desc = 'Pause'
       },
       {
-        "<leader>dr",
-        function() require("dap").repl.toggle() end,
-        desc = "Toggle REPL"
+        '<leader>dr',
+        function() require('dap').repl.toggle() end,
+        desc = 'Toggle REPL'
       },
       {
-        "<leader>ds",
-        function() require("dap").session() end,
-        desc = "Session"
+        '<leader>ds',
+        function() require('dap').session() end,
+        desc = 'Session'
       },
       {
-        "<leader>dt",
-        function() require("dap").terminate() end,
-        desc = "Terminate"
+        '<leader>dt',
+        function() require('dap').terminate() end,
+        desc = 'Terminate'
       },
       {
-        "<leader>dw",
-        function() require("dap.ui.widgets").hover() end,
-        desc = "Widgets"
+        '<leader>dw',
+        function() require('dap.ui.widgets').hover() end,
+        desc = 'Widgets'
       },
     },
   },
