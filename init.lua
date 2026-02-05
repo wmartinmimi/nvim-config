@@ -53,6 +53,11 @@ end
 g.do_filetype_lua = true
 g.did_load_filetypes = false
 
+g.loaded_python3_provider = true
+g.loaded_ruby_provider = true
+g.loaded_perl_provider = true
+g.loaded_node_provider = true
+
 -- quicker loader
 vim.loader.enable()
 
@@ -380,17 +385,11 @@ local config = {
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
     commit = 'b0b4955',
-    opts = {
-      hijack_unnamed_buffer_when_opening = true,
-    },
+    opts = {},
     cmd = 'NvimTreeToggle',
     keys = {
       { 'ff', '<CMD>NvimTreeToggle<CR>', desc = 'opens nvim-tree' }
     },
-    init = function()
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-    end
   },
   {
     'lukas-reineke/indent-blankline.nvim',
