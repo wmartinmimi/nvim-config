@@ -156,12 +156,20 @@ local config = {
       ts_select_io('i', '@conditional')
       ts_select_io('l', '@loop')
       ts_select_io('/', '@comment')
+      ts_select_io('a', '@parameter')
 
       vim.keymap.set({ 'x', 'o' }, 'as', function()
         require_ts 'select'.select_textobject('@local.scope', 'locals')
       end)
       vim.keymap.set({ 'x', 'o' }, 'is', function()
         require_ts 'select'.select_textobject('@fold', 'folds')
+      end)
+
+      vim.keymap.set('n', '<leader>]a', function()
+        require_ts 'swap'.swap_next '@parameter.inner'
+      end)
+      vim.keymap.set('n', '<leader>[a', function()
+        require_ts 'swap'.swap_previous '@parameter.inner'
       end)
 
       local function ts_goto(key, obj, scm)
@@ -199,6 +207,7 @@ local config = {
       ts_goto_io('i', '@conditional')
       ts_goto_io('l', '@loop')
       ts_goto_io('/', '@comment')
+      ts_goto_io('a', '@parameter')
 
       ts_goto('s', '@local.scope', 'locals')
       ts_goto('z', '@fold', 'folds')
