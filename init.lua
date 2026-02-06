@@ -225,6 +225,7 @@ local config = {
             ['@comment.warning'] = { fg = colors.yellow, bg = 'NONE', style = { 'bold' } },
             ['@comment.hint'] = { fg = colors.blue, bg = 'NONE', style = { 'bold' } },
             ['@comment.todo'] = { fg = colors.flamingo, bg = 'NONE', style = { 'bold' } },
+            ['Todo'] = { fg = colors.flamingo, bg = 'NONE', style = { 'bold' } },
             ['@comment.note'] = { fg = colors.rosewater, bg = 'NONE', style = { 'bold' } },
           }
         end
@@ -292,16 +293,22 @@ local config = {
   },
   {
     'wmartinmimi/todo-highlight.nvim',
+    event = 'User TSBufAttach',
+    config = function (_, opts)
+      require 'todo-highlight'.setup(opts)
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TSBufAttach',
+        callback = function()
+          require 'todo-highlight'.highlight()
+        end,
+      })
+    end,
     opts = {
-      -- TODO: add lua highlight function
       ts_query = function(ft)
         if ft == 'typst' then
-          return [[
-            ((comment) @comment)
-            ((text) @text)
-          ]]
+          return '[(comment) (text)] @comment'
         end
-        return [[(comment) @comment]]
+        return nil
       end,
       contextless = function(ft)
         return ft == 'markdown'
