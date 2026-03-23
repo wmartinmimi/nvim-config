@@ -25,6 +25,12 @@ local servers = {
       },
     },
   },
+  zls = {
+    settings = {
+      -- required until: https://github.com/zigtools/zls/issues/2617
+      build_on_save_args = { '-fincremental' },
+    }
+  },
 }
 
 -- options --
