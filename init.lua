@@ -209,7 +209,7 @@ local config = {
       ts_goto_io('/', '@comment')
       ts_goto_io('a', '@parameter')
 
-      ts_goto('s', '@local.scope', 'locals')
+      -- ts_goto('s', '@local.scope', 'locals')
       ts_goto('z', '@fold', 'folds')
 
       vim.keymap.set({ 'n', 'x', 'o' }, ';', require_ts 'repeatable_move'.repeat_last_move_next)
