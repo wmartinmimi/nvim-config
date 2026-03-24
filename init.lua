@@ -113,6 +113,8 @@ local config = {
     build = ':TSUpdate',
     cmd = { 'TSInstall', 'TSInstallFromGrammar', 'TSUpdate', 'TSUninstall', 'TSLog' },
     init = function()
+      -- some devices stores installed parsers in lazy path instead
+      vim.opt.rtp:append(require('lazy.core.config').plugins['nvim-treesitter'].dir)
       local function load_treesitter(args)
         local ok, parser = pcall(vim.treesitter.get_parser, args.buf)
         if ok then
