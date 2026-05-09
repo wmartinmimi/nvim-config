@@ -104,8 +104,7 @@ vim.api.nvim_create_user_command('NewNvimLua', new_project_file, {})
 local config = {
   'folke/lazy.nvim',
   {
-    'Pocco81/auto-save.nvim',
-    commit = '979b6c8',
+    'okuuva/auto-save.nvim',
     opts = {},
     event = 'VeryLazy',
   },
@@ -117,8 +116,8 @@ local config = {
       -- some devices stores installed parsers in lazy path instead
       vim.opt.rtp:append(require('lazy.core.config').plugins['nvim-treesitter'].dir)
       local function load_treesitter(args)
-        local ok, parser = pcall(vim.treesitter.get_parser, args.buf)
-        if ok then
+        local parser = vim.treesitter.get_parser(args.buf)
+        if parser then
           vim.treesitter.start(args.buf)
           vim.api.nvim_exec_autocmds('User', {
             pattern = 'TSBufAttach',
@@ -254,13 +253,11 @@ local config = {
   },
   {
     'nmac427/guess-indent.nvim',
-    commit = '84a4987',
     opts = {},
     event = { 'BufReadPost', 'BufNewFile' },
   },
   {
     'folke/flash.nvim',
-    commit = '3c94266',
     opts = {
       modes = {
         treesitter = {
@@ -335,7 +332,6 @@ local config = {
   },
   {
     'sphamba/smear-cursor.nvim',
-    commit = 'c85bdbb',
     event = 'VeryLazy',
     opts = {},
   },
@@ -345,7 +341,6 @@ local config = {
       'nvim-web-devicons',
       'catppuccin'
     },
-    commit = '3a74402',
     event = 'UIEnter',
   },
   {
@@ -380,7 +375,6 @@ local config = {
   },
   {
     'kevinhwang91/nvim-fundo',
-    commit = 'ac9c937',
     run = function()
       require('fundo').install()
     end,
@@ -390,7 +384,6 @@ local config = {
   },
   {
     'mbbill/undotree',
-    commit = '15d91b0',
     keys = {
       {
         'tu',
@@ -406,7 +399,6 @@ local config = {
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = 'nvim-web-devicons',
-    commit = 'b0b4955',
     opts = {},
     cmd = 'NvimTreeToggle',
     keys = {
@@ -418,7 +410,6 @@ local config = {
     dependencies = {
       'nmac427/guess-indent.nvim',
     },
-    commit = '005b560',
     main = 'ibl',
     event = 'VeryLazy',
     opts = {
@@ -430,7 +421,6 @@ local config = {
   },
   {
     'https://gitlab.com/HiPhish/rainbow-delimiters.nvim',
-    commit = 'd6b802552cbe7d643a3b6b31f419c248d1f1e220',
     submodules = false,
     event = 'User TSBufAttach',
     config = function()
@@ -449,7 +439,6 @@ local config = {
       'nvim-tree/nvim-web-devicons',
       'catppuccin'
     },
-    commit = 'a94fc68',
     event = 'VeryLazy',
     opts = {},
   },
@@ -466,7 +455,6 @@ local config = {
   },
   {
     'delphinus/auto-cursorline.nvim',
-    commit = 'ad7e0d4',
     event = 'VeryLazy',
     opts = {
       wait_ms = 100,
@@ -474,7 +462,6 @@ local config = {
   },
   {
     'tzachar/local-highlight.nvim',
-    commit = '272f36f',
     opts = {
       hlgroup = '@text.underline',
       cw_hlgroup = '@text.underline',
@@ -485,7 +472,6 @@ local config = {
   },
   {
     'brenoprata10/nvim-highlight-colors',
-    commit = 'b42a5cc',
     opts = {
       render = 'virtual',
     },
@@ -493,13 +479,11 @@ local config = {
   },
   {
     'hedyhli/outline.nvim',
-    commit = '1967ef5',
     cmd = { 'Outline', 'OutlineOpen' },
     opts = {},
   },
   {
     'nacro90/numb.nvim',
-    commit = '8164fd3',
     event = { 'VeryLazy' },
     opts = {},
   },
@@ -592,7 +576,6 @@ local config = {
     dependencies = {
       'nvim-tree/nvim-web-devicons'
     },
-    commit = '85bedb7',
     opts = {},
     keys = {
       { 'cd', function() require('trouble').toggle({ mode = 'diagnostics' }) end, desc = 'opens trouble' },
@@ -600,7 +583,6 @@ local config = {
   },
   {
     'stevearc/quicker.nvim',
-    commit = '51d3926',
     event = 'FileType qf',
     opts = {},
   },
@@ -615,7 +597,6 @@ local config = {
   },
   {
     'chomosuke/typst-preview.nvim',
-    commit = 'dea4525',
     cmd = {
       'TypstPreview',
       'TypstPreviewToggle',
@@ -744,7 +725,6 @@ local config = {
     dependencies = {
       'mfussenegger/nvim-dap',
     },
-    commit = 'fbdb48c',
     opts = {},
     keys = {
       {

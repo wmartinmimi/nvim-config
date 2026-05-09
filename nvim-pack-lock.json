@@ -1,0 +1,16 @@
+{
+  "plugins": {
+    "auto-save": {
+      "rev": "9aabcb8396224dcbf8d51c0c1d620d88a46e89d7",
+      "src": "https://github.com/okuuva/auto-save.nvim"
+    },
+    "auto-save.nvim": {
+      "rev": "9aabcb8396224dcbf8d51c0c1d620d88a46e89d7",
+      "src": "https://github.com/okuuva/auto-save.nvim"
+    },
+    "nvim-treesitter": {
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    }
+  }
+}
