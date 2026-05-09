@@ -100,6 +100,11 @@ end
 
 vim.api.nvim_create_user_command('NewNvimLua', new_project_file, {})
 
+vim.keymap.set('n', 'tu', function()
+  vim.cmd.packadd('nvim.undotree')
+  require('undotree').open()
+end)
+
 -- plugin configs
 local config = {
   'folke/lazy.nvim',
@@ -380,20 +385,6 @@ local config = {
     end,
     init = function()
       opt.undofile = true
-    end
-  },
-  {
-    'mbbill/undotree',
-    keys = {
-      {
-        'tu',
-        '<cmd>UndotreeToggle<CR>',
-        desc = 'toggle undo tree'
-      }
-    },
-    config = function()
-      g.undotree_ShortIndicators = true
-      g.undotree_SetFocusWhenToggle = true
     end
   },
   {
