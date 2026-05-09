@@ -100,6 +100,48 @@ end
 
 vim.api.nvim_create_user_command('NewNvimLua', new_project_file, {})
 
+-- lazy loader
+vim.api.nvim_create_autocmd('UIEnter', {
+  once = true,
+  callback = function()
+    -- delay until UI drawn
+    vim.schedule(function()
+      vim.api.nvim_exec_autocmds('User', { pattern = 'TooLazy' })
+    end)
+  end
+})
+
+function loader(plugin)
+  local data = plugin.spec.data or {}
+  local load = function(ev)
+    -- NOTE: temporary workaround
+    vim.cmd[[set packpath&]]
+    vim.cmd.packadd(plugin.spec.name)
+    if data.opts then
+      require(plugin.spec.name).setup(data.opts)
+    end
+    if data.load then
+      data.load(ev)
+    end
+  end
+  if data.lazy then
+    if data.lazy == true then
+      vim.api.nvim_create_autocmd('User', {
+        once = true,
+        pattern = 'TooLazy',
+        callback = load
+      })
+    else
+      vim.api.nvim_create_autocmd(data.lazy, {
+        once = true,
+        callback = load
+      })
+    end
+  else
+    load()
+  end
+end
+
 -- undo
 vim.opt.undofile = true
 vim.keymap.set('n', 'tu', function()
@@ -107,14 +149,68 @@ vim.keymap.set('n', 'tu', function()
   require('undotree').open()
 end)
 
+vim.pack.add({
+  {
+    name = 'auto-save',
+    src = 'https://github.com/okuuva/auto-save.nvim',
+    data = { opts = {}, lazy = true },
+  },
+  {
+    name = 'smear_cursor',
+    src = 'https://github.com/sphamba/smear-cursor.nvim',
+    data = { opts = {}, lazy = true },
+  },
+  {
+    name = 'nvim-autopairs',
+    src = 'https://github.com/windwp/nvim-autopairs',
+    data = { opts = { check_ts = true }, lazy = 'InsertEnter' },
+  },
+  {
+    name = 'auto-cursorline',
+    src = 'https://github.com/delphinus/auto-cursorline.nvim',
+    data = { opts = { wait_ms = 100 }, lazy = true },
+  },
+  {
+    name = 'local-highlight',
+    src = 'https://github.com/tzachar/local-highlight.nvim',
+    data = { opts = {
+      hlgroup = '@text.underline',
+      cw_hlgroup = '@text.underline',
+      insert_mode = true,
+      debounce_timeout = 100,
+      animate = false,
+    }, lazy = true },
+  },
+  {
+    name = 'nvim-highlight-colors',
+    src = 'https://github.com/brenoprata10/nvim-highlight-colors',
+    data = { opts = { render = 'virtual' }, lazy = true },
+  },
+  {
+    name = 'numb',
+    src = 'https://github.com/nacro90/numb.nvim',
+    data = { opts = {}, lazy = true },
+  },
+  {
+    name = 'gitsigns',
+    src = 'https://github.com/lewis6991/gitsigns.nvim',
+    data = { opts = {
+      signcolumn = true,
+      attach_to_untracked = true,
+      current_line_blame = false,
+    }, lazy = true },
+  },
+  {
+    name = 'vim-visual-multi',
+    src = 'https://github.com/mg979/vim-visual-multi',
+    branch = 'master',
+    data = { lazy = true },
+  },
+}, { load = loader })
+
 -- plugin configs
 local config = {
   'folke/lazy.nvim',
-  {
-    'okuuva/auto-save.nvim',
-    opts = {},
-    event = 'VeryLazy',
-  },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -308,12 +404,6 @@ local config = {
     },
   },
   {
-    'mg979/vim-visual-multi',
-    commit = 'a6975e7',
-    branch = 'master',
-    event = 'VeryLazy',
-  },
-  {
     'wmartinmimi/todo-highlight.nvim',
     event = 'User TSBufAttach',
     config = function(_, opts)
@@ -336,11 +426,6 @@ local config = {
         return ft == 'markdown'
       end,
     },
-  },
-  {
-    'sphamba/smear-cursor.nvim',
-    event = 'VeryLazy',
-    opts = {},
   },
   {
     'romgrk/barbar.nvim',
@@ -431,44 +516,8 @@ local config = {
     lazy = true
   },
   {
-    'windwp/nvim-autopairs',
-    opts = {
-      check_ts = true,
-    },
-    event = 'InsertEnter',
-  },
-  {
-    'delphinus/auto-cursorline.nvim',
-    event = 'VeryLazy',
-    opts = {
-      wait_ms = 100,
-    },
-  },
-  {
-    'tzachar/local-highlight.nvim',
-    opts = {
-      hlgroup = '@text.underline',
-      cw_hlgroup = '@text.underline',
-      insert_mode = true,
-      debounce_timeout = 100,
-      animate = false,
-    },
-  },
-  {
-    'brenoprata10/nvim-highlight-colors',
-    opts = {
-      render = 'virtual',
-    },
-    event = 'VeryLazy',
-  },
-  {
     'hedyhli/outline.nvim',
     cmd = { 'Outline', 'OutlineOpen' },
-    opts = {},
-  },
-  {
-    'nacro90/numb.nvim',
-    event = { 'VeryLazy' },
     opts = {},
   },
   {
@@ -569,15 +618,6 @@ local config = {
     'stevearc/quicker.nvim',
     event = 'FileType qf',
     opts = {},
-  },
-  {
-    'lewis6991/gitsigns.nvim',
-    event = 'VeryLazy',
-    opts = {
-      signcolumn = true,
-      attach_to_untracked = true,
-      current_line_blame = false,
-    },
   },
   {
     'chomosuke/typst-preview.nvim',

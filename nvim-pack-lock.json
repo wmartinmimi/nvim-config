@@ -1,20 +1,40 @@
 {
   "plugins": {
+    "auto-cursorline": {
+      "rev": "ad7e0d4f026b43057ca3605459b4f160397385b2",
+      "src": "https://github.com/delphinus/auto-cursorline.nvim"
+    },
     "auto-save": {
       "rev": "9aabcb8396224dcbf8d51c0c1d620d88a46e89d7",
       "src": "https://github.com/okuuva/auto-save.nvim"
     },
-    "auto-save.nvim": {
-      "rev": "9aabcb8396224dcbf8d51c0c1d620d88a46e89d7",
-      "src": "https://github.com/okuuva/auto-save.nvim"
+    "gitsigns": {
+      "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
-    "nvim-fundo": {
-      "rev": "c2b83cb19e4ac475f2b08aaf775afe3da19bc495",
-      "src": "https://github.com/kevinhwang91/nvim-fundo"
+    "local-highlight": {
+      "rev": "dd8ae2ca26a5cfa17fb598864eacbe2df63938f3",
+      "src": "https://github.com/tzachar/local-highlight.nvim"
     },
-    "nvim-treesitter": {
-      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
-      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    "numb": {
+      "rev": "12ef3913dea8727d4632c6f2ed47957a993de627",
+      "src": "https://github.com/nacro90/numb.nvim"
+    },
+    "nvim-autopairs": {
+      "rev": "7b9923abad60b903ece7c52940e1321d39eccc79",
+      "src": "https://github.com/windwp/nvim-autopairs"
+    },
+    "nvim-highlight-colors": {
+      "rev": "e4c7af0211866162d999ce0bdd6a029302e19139",
+      "src": "https://github.com/brenoprata10/nvim-highlight-colors"
+    },
+    "smear_cursor": {
+      "rev": "9e9378d6ee34bb3782e0e8c63d9ec8ca618b479b",
+      "src": "https://github.com/sphamba/smear-cursor.nvim"
+    },
+    "vim-visual-multi": {
+      "rev": "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
+      "src": "https://github.com/mg979/vim-visual-multi"
     }
   }
 }
