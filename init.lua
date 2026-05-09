@@ -100,6 +100,8 @@ end
 
 vim.api.nvim_create_user_command('NewNvimLua', new_project_file, {})
 
+-- undo
+vim.opt.undofile = true
 vim.keymap.set('n', 'tu', function()
   vim.cmd.packadd('nvim.undotree')
   require('undotree').open()
@@ -314,7 +316,7 @@ local config = {
   {
     'wmartinmimi/todo-highlight.nvim',
     event = 'User TSBufAttach',
-    config = function (_, opts)
+    config = function(_, opts)
       require 'todo-highlight'.setup(opts)
       vim.api.nvim_create_autocmd('User', {
         pattern = 'TSBufAttach',
@@ -376,15 +378,6 @@ local config = {
           },
         },
       }
-    end
-  },
-  {
-    'kevinhwang91/nvim-fundo',
-    run = function()
-      require('fundo').install()
-    end,
-    init = function()
-      opt.undofile = true
     end
   },
   {
