@@ -128,6 +128,14 @@ vim.api.nvim_create_autocmd('UIEnter', {
   end
 })
 
+local function load_once(name, cb)
+  local pack = require(name)
+  if not pack._configured then
+    cb()
+    pack._configured = true
+  end
+end
+
 local function lazy(cb)
   vim.api.nvim_create_autocmd('User', {
     once = true,
@@ -138,23 +146,24 @@ end
 
 local function lazy_cmd(cmds, cb)
   for _, cmd in ipairs(cmds) do
-    local function full_setup(opts)
-      for _, c in ipairs(cmds) do
-        vim.api.nvim_del_user_command(c)
+    local loaded = false
+    local function full_callback()
+      if not loaded then
+        for _, c in ipairs(cmds) do
+          vim.api.nvim_del_user_command(c)
+        end
+        cb()
+        loaded = true
       end
-      cb()
-      vim.cmd(cmd .. (opts.args or ''))
     end
 
-    vim.api.nvim_create_user_command(cmd, full_setup, {})
-  end
-end
-
-local function load_once(name, cb)
-  local pack = require(name)
-  if not pack._configured then
-    cb()
-    pack._configured = true
+    vim.api.nvim_create_user_command(cmd, function(opts)
+      full_callback()
+      vim.cmd(cmd .. ' ' .. (opts.args or ''))
+    end, { nargs = '*', complete = function (_, c, _)
+      full_callback()
+      return vim.fn.getcompletion(c, 'cmdline')
+    end })
   end
 end
 
