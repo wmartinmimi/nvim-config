@@ -4,12 +4,6 @@ local isTermux = string.find(
   'termux'
 )
 
--- alias --
-local vim = vim
-local opt = vim.opt
-local g = vim.g
-local map = vim.keymap.set
-
 -- LSP --
 local servers = {
   clangd = {
@@ -33,34 +27,43 @@ local servers = {
   },
 }
 
--- options --
-opt.encoding = 'utf8'
-opt.fileformat = 'unix'
-opt.number = true
-opt.relativenumber = true
-opt.termguicolors = true
-opt.expandtab = true
-opt.lazyredraw = true
-opt.linebreak = true
-opt.scrolloff = 999
-opt.modeline = false
+--------------------------------
+--- OPTIONS
+--------------------------------
+
+-- file encodings
+vim.opt.encoding = 'utf8'
+vim.opt.fileformat = 'unix'
+
+-- editor appearances
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.linebreak = true
+vim.opt.scrolloff = 999
+vim.opt.modeline = false
+
+vim.opt.termguicolors = true
+vim.opt.lazyredraw = true
+
+vim.opt.expandtab = true
+
 -- dangerous, local project execution
-opt.exrc = true
-opt.secure = true
+vim.opt.exrc = true
+vim.opt.secure = true
 
 
 if isTermux then
-  opt.tabstop = 2
-  opt.shiftwidth = 2
+  vim.opt.tabstop = 2
+  vim.opt.shiftwidth = 2
 else
-  opt.tabstop = 4
-  opt.shiftwidth = 4
+  vim.opt.tabstop = 4
+  vim.opt.shiftwidth = 4
 end
 
-g.loaded_python3_provider = true
-g.loaded_ruby_provider = true
-g.loaded_perl_provider = true
-g.loaded_node_provider = true
+vim.g.loaded_python3_provider = true
+vim.g.loaded_ruby_provider = true
+vim.g.loaded_perl_provider = true
+vim.g.loaded_node_provider = true
 
 -- quicker loader
 vim.loader.enable()
@@ -535,7 +538,7 @@ local config = {
             module = 'blink-cmp-spell',
             score_offset = -400,
             enabled = function()
-              return vim.opt.spell:get()
+              return vim.opt.spell
             end,
             opts = { use_cmp_spell_sorting = true, keep_all_entries = true, max_entries = 10 },
           },
@@ -611,7 +614,7 @@ local config = {
       vim.lsp.enable(vim.tbl_keys(servers))
 
       -- diagnostics are global
-      map('n', 'gl', vim.diagnostic.open_float)
+      vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
 
       local diagnostics = {
         signs = false,
@@ -650,7 +653,7 @@ local config = {
         end
       })
 
-      map({ 'n', 'x' }, 'cf', function()
+      vim.keymap.set({ 'n', 'x' }, 'cf', function()
         print('no lsp, please format with gg=G')
       end, {})
 
@@ -660,12 +663,12 @@ local config = {
           local opts = { buffer = event.buf }
 
           -- because they only work if you have an active language server
-          map('n', 'gd', vim.lsp.buf.definition, opts)
-          map('n', 'gD', vim.lsp.buf.declaration, opts)
-          map('n', 'go', vim.lsp.buf.type_definition, opts)
-          map('n', 'gs', vim.lsp.buf.signature_help, opts)
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+          vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
+          vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, opts)
 
-          map({ 'n', 'x' }, 'cf', function()
+          vim.keymap.set({ 'n', 'x' }, 'cf', function()
             print('formatted')
             vim.lsp.buf.format({ async = true })
           end, opts)
