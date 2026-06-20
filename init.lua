@@ -511,9 +511,9 @@ require 'local-highlight'.setup {
 -- blink
 vim.opt.spell = true
 vim.opt.spelllang = { 'en_gb', 'en_us' }
--- TODO: better location to place this
 vim.api.nvim_set_hl(0, 'SnippetTabstop', {})
 vim.api.nvim_set_hl(0, 'SnippetTabstopActive', {})
+
 vim.api.nvim_create_autocmd({ 'InsertEnter', 'CmdlineEnter' }, {
   once = true,
   callback = function()
@@ -531,8 +531,12 @@ vim.api.nvim_create_autocmd({ 'InsertEnter', 'CmdlineEnter' }, {
       completion = {
         documentation = { auto_show = true, auto_show_delay_ms = 500 },
         ghost_text = { enabled = true },
+        list = { selection = {
+          preselect = function(_)
+            return not require 'blink.cmp'.snippet_active { direction = 1 }
+          end,
+        } },
         menu = {
-          -- TODO: menu item direction, not implemented yet
           direction_priority = { 'n', 's' },
           draw = {
             columns = {
@@ -583,7 +587,17 @@ vim.api.nvim_create_autocmd({ 'InsertEnter', 'CmdlineEnter' }, {
       keymap = {
         preset = 'super-tab',
         ['<M-Left>'] = { 'cancel' },
-        ['<M-Right>'] = { 'accept' },
+        ['<M-Right>'] = {
+          function(cmp)
+            if cmp.snippet_active() then
+              return cmp.accept()
+            else
+              return cmp.select_and_accept()
+            end
+          end,
+          'snippet_forward',
+          'fallback'
+        },
       },
     }
   end
@@ -862,4 +876,3 @@ local function new_project_file()
 end
 
 vim.api.nvim_create_user_command('NewProjectConfig', new_project_file, {})
-
