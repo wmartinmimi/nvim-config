@@ -37,6 +37,10 @@
       "rev": "49a926655a2f5579e9c276470fc300baaa49e524",
       "src": "https://github.com/catppuccin/nvim"
     },
+    "clipboard-image.nvim": {
+      "rev": "5ccecdf27a02b1bf0a2602cf143bcf69f1ca4465",
+      "src": "https://github.com/dfendr/clipboard-image.nvim"
+    },
     "flash.nvim": {
       "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
       "src": "https://github.com/folke/flash.nvim"

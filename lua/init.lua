@@ -81,6 +81,7 @@ vim.pack.add({
   { src = 'https://github.com/moyiz/blink-emoji.nvim' },
   { src = 'https://github.com/MahanRahmati/blink-nerdfont.nvim' },
   { src = 'https://github.com/saghen/blink.cmp',                           version = vim.version.range '1.*' },
+  { src = 'https://github.com/dfendr/clipboard-image.nvim' },
   { src = 'https://github.com/folke/flash.nvim' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/nmac427/guess-indent.nvim' },
@@ -818,6 +819,16 @@ lazy_cmd({ 'TypstPreview', 'TypstPreviewToggle' }, function()
       ['tinymist'] = vim.fn.exepath('tinymist'),
       ['websocat'] = vim.fn.exepath('websocat'),
     }
+  }
+end)
+
+-- paste images
+lazy_cmd({ 'PasteImg' }, function()
+  vim.cmd.packadd 'clipboard-image.nvim'
+  require 'clipboard-image'.setup {
+    typst = {
+      affix = "#image(\"%s\")"
+    },
   }
 end)
 
