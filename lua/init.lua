@@ -107,7 +107,6 @@ vim.pack.add({
   { src = 'https://github.com/nvim-lua/plenary.nvim' },
   { src = 'https://github.com/stevearc/quicker.nvim' },
   { src = 'https://gitlab.com/HiPhish/rainbow-delimiters.nvim' },
-  { src = 'https://github.com/sphamba/smear-cursor.nvim' },
   { src = 'https://github.com/nvim-telescope/telescope.nvim' }, -- depends: plenary.nvim, trouble.nvim
   { src = 'https://github.com/wmartinmimi/todo-highlight.nvim' },
   { src = 'https://github.com/folke/trouble.nvim' },            -- depends: nvim-web-devicons
@@ -844,9 +843,6 @@ lazy(function()
   require 'auto-save'.setup {}
 
   vim.cmd.packadd 'vim-visual-multi'
-
-  vim.cmd.packadd 'smear-cursor.nvim'
-  require 'smear_cursor'.setup {}
 
   vim.cmd.packadd 'auto-cursorline.nvim'
   require 'auto-cursorline'.setup {
